@@ -3,7 +3,9 @@
 </script>
 
 <template>
-<p>here is passage index </p>
+  <PageLayoutHeader/>
+  <slot/>
+  <PageLayoutFooter/>
 </template>
 
 <style scoped>

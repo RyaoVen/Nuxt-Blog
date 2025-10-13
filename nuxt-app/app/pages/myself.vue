@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<p>here is passage index </p>
+
 </template>
 
 <style scoped>
