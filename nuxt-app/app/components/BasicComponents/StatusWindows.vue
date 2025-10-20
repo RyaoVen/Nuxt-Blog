@@ -3,13 +3,9 @@
 </script>
 
 <template>
-<div class="body">
 
-</div>
 </template>
 
 <style scoped>
-.body{
-  height: 100vh;
-}
+
 </style>
