@@ -25,6 +25,7 @@ function changeTheme() {
   <BasicComponentsBtn1 @click="()=>{console.log('clicked')}" text="文章"/>
   <BasicComponentsBtn1 @click="()=>{console.log('clicked')}" text="归档"/>
   <BasicComponentsBtn1 @click="()=>{console.log('clicked')}" text="留言"/>
+  <BasicComponentsBtn1 @click="()=>{console.log('clicked')}" text="闲话"/>
   <BasicComponentsBtn1 @click="()=>{console.log('clicked')}" text="关于"/>
 </div>
   <div :class="$style.btns1">
