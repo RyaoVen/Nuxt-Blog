@@ -8,6 +8,75 @@ const TextH1:string = "Hi,here is RyaoVen."
 const TextSpan:string = "I won't stop."
 import { ref, onMounted } from 'vue';
 import CardPassage from "~/components/CardPassage.vue";
+import ArticleCard from "~/components/ArticleCard.vue";
+import FriendLinkCard from "~/components/FriendLinkCard.vue";
+
+// 文章数据
+const articles = ref([
+  {
+    title: "如何使用Nuxt.js构建高性能网站",
+    author: "RyaoVen",
+    date: "2023-06-15",
+    category: "前端开发",
+    tags: ["Nuxt.js", "Vue", "性能优化"],
+    summary: "本文详细介绍了Nuxt.js的核心特性以及如何利用它们构建高性能的现代化网站...",
+    coverImage: "/images/nuxt-cover.jpg"
+  },
+  {
+    title: "TypeScript进阶技巧分享",
+    author: "RyaoVen",
+    date: "2023-05-20",
+    category: "编程语言",
+    tags: ["TypeScript", "JavaScript", "编程技巧"],
+    summary: "深入探讨TypeScript的高级特性，包括类型体操、条件类型和映射类型等进阶用法...",
+    coverImage: "/images/typescript-cover.jpg"
+  },
+  {
+    title: "现代Web开发中的CSS架构设计",
+    author: "RyaoVen",
+    date: "2023-04-10",
+    category: "CSS",
+    tags: ["CSS", "架构", "设计模式"],
+    summary: "探讨在大型项目中如何组织和管理CSS，包括BEM、ITCSS等方法论的实践经验...",
+    coverImage: "/images/css-cover.jpg"
+  }
+]);
+
+// 友链数据
+const friendLinks = ref([
+  {
+    avatar: "/images/friend1-avatar.jpg",
+    siteName: "前端进阶之路",
+    ownerName: "张三",
+    description: "分享前端开发技巧和最新技术动态，专注于Vue.js和React生态",
+    screenshot: "/images/friend1-site.jpg",
+    url: "https://example.com/friend1"
+  },
+  {
+    avatar: "/images/friend2-avatar.jpg",
+    siteName: "设计师日记",
+    ownerName: "李四",
+    description: "UI/UX设计分享，探讨设计趋势和用户体验优化方法",
+    screenshot: "/images/friend2-site.jpg",
+    url: "https://example.com/friend2"
+  },
+  {
+    avatar: "/images/friend3-avatar.jpg",
+    siteName: "全栈开发笔记",
+    ownerName: "王五",
+    description: "全栈开发经验分享，涵盖前后端技术和DevOps实践",
+    screenshot: "/images/friend3-site.jpg",
+    url: "https://example.com/friend3"
+  },
+  {
+    avatar: "/images/friend4-avatar.jpg",
+    siteName: "算法之美",
+    ownerName: "赵六",
+    description: "算法学习与分析，leetcode题解和计算机基础知识",
+    screenshot: "/images/friend4-site.jpg",
+    url: "https://example.com/friend4"
+  }
+]);
 
 // 原始字符串（可自定义）
 const originalText = "Hi, here is RyaoVen.";
@@ -131,10 +200,46 @@ function click() {
 
   <el-divider />
 
-  <div :class="$style.passages">
-    <CardPassage />
+  <div :class="$style.sectionContainer">
+    <div :class="$style.sectionHeader">
+      <h2 :class="$style.sectionTitle">最近文章</h2>
+      <div :class="$style.sectionLine"></div>
+    </div>
+    <div :class="$style.articlesContainer">
+      <ArticleCard 
+        v-for="(article, index) in articles" 
+        :key="index"
+        :title="article.title"
+        :author="article.author"
+        :date="article.date"
+        :category="article.category"
+        :tags="article.tags"
+        :summary="article.summary"
+        :coverImage="article.coverImage"
+      />
+    </div>
   </div>
 
+  <el-divider />
+
+  <div :class="$style.sectionContainer">
+    <div :class="$style.sectionHeader">
+      <h2 :class="$style.sectionTitle">友情链接</h2>
+      <div :class="$style.sectionLine"></div>
+    </div>
+    <div :class="$style.friendLinksContainer">
+      <FriendLinkCard 
+        v-for="(link, index) in friendLinks" 
+        :key="index"
+        :avatar="link.avatar"
+        :siteName="link.siteName"
+        :ownerName="link.ownerName"
+        :description="link.description"
+        :screenshot="link.screenshot"
+        :url="link.url"
+      />
+    </div>
+  </div>
 
 </div>
 </template>
@@ -208,13 +313,51 @@ function click() {
       0 2px 4px rgba(0, 0, 0, 0.05),  /* 底层浅阴影 */
       0 8px 16px rgba(0, 0, 0, 0.1); /* 上层深阴影 */
 }
-.passages{
-  height: 100vh;
-  width: 68vw;
+.sectionContainer {
+  width: 80vw;
+  max-width: 1200px;
+  margin: 60px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.sectionHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.sectionTitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 12px 0;
+}
+
+.sectionLine {
+  width: 60px;
+  height: 3px;
+  background-color: #3498db;
+  margin-top: 8px;
+}
+
+.articlesContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.friendLinksContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  padding: 20px 0;
 }
 </style>

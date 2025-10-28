@@ -31,9 +31,15 @@ const props= defineProps({
   cursor: pointer;
   transition: all 0.235s ease
 }
-.containerTop :hover{
+.containerTop:hover{
   background-color: rgba(255, 255, 255, 0.45); /* 白色半透明背景 */
   border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 15px rgba(0, 120, 255, 0.6); /* 蓝色荧光效果 */
+  transform: translateY(-2px);
+}
+
+.containerTop:hover span {
+  color: #0078ff;
 }
 span{
   color: rgb(96, 96, 96);

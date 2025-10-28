@@ -38,38 +38,95 @@ function changeTheme() {
 
 <style module>
 .containerTop{
-
-  background-color: aqua;
+  background-color: #f8f9fa;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-border-bottom:1px solid rgba(128, 128, 128, 0.5);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
-.btns{
 
+.btns{
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  border-radius: 18px;
-  background-color: rgb(249, 247, 243); /* 白色半透明背景 */
-  padding: 3px 13px;
+  gap: 15px;
+  border-radius: 20px;
+  background-color: rgba(249, 247, 243, 0.7); /* 白色半透明背景 */
+  backdrop-filter: blur(5px);
+  padding: 5px 18px;
+  transition: all 0.3s ease;
 }
+
+/* 为BasicComponentsBtn1组件添加悬停效果 */
+.btns :global(.containerTop) {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btns :global(.containerTop:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(0, 120, 255, 0.6); /* 蓝色荧光效果 */
+  border: 1px solid rgba(0, 120, 255, 0.4);
+}
+
+.btns :global(.containerTop:hover::before) {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(0, 120, 255, 0.2) 0%, transparent 70%);
+  animation: glowPulse 1.5s infinite alternate;
+}
+
+@keyframes glowPulse {
+  0% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
 .btns1{
   margin-left: auto;
+  margin-right: 2vw;
+  display: flex;
+  gap: 10px;
 }
+
+/* 为圆形按钮添加悬停效果 */
+.btns1 :global(.el-button) {
+  transition: all 0.3s ease;
+}
+
+.btns1 :global(.el-button:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(0, 120, 255, 0.6); /* 蓝色荧光效果 */
+}
+
 .logo{
   width: 80px;
   height: 44px;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-right: auto;
   margin-left: 2vw;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 </style>
