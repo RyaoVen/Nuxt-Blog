@@ -1,103 +1,206 @@
 <script lang="ts" setup>
-
+const currentYear = new Date().getFullYear();
 </script>
 
 <template>
-  <div :class="$style.body">
-    <div :class="$style.linksList">
-    <span>也许你想去：</span>
-      <NuxtLink :class="$style.links" to="/">
-        首页
-      </NuxtLink>
-    </div>
-    <div :class="$style.linksList">
-      <span>也许你想去：</span>
-      <NuxtLink :class="$style.links" to="/">
-        首页
-      </NuxtLink>
-    </div>
-    <div :class="$style.linksList">
-      <span>也许你想知道：</span>
-      <NuxtLink :class="$style.links" to="/">
-        首页
-      </NuxtLink>
-    </div>
-    <div :class="$style.linksList">
-      <span>也许你想联系我：</span>
-      <span>
-        -->
-        <NuxtLink :class="$style.links" to="/">
-        首页
-      </NuxtLink>
-      </span>
+  <footer :class="$style.footer">
+    <div :class="$style.container">
+      <div :class="$style.content">
+        <!-- 左侧品牌区 -->
+        <div :class="$style.brand">
+          <h3 :class="$style.brandName">RyaoVen</h3>
+          <p :class="$style.brandDesc">全栈开发者 · 终身学习者</p>
+          <div :class="$style.social">
+            <a href="#" :class="$style.socialLink"><img src="/icon/github.png" alt="GitHub" /></a>
+            <a href="#" :class="$style.socialLink"><img src="/icon/gitee.png" alt="Gitee" /></a>
+            <a href="#" :class="$style.socialLink"><img src="/icon/weibo.png" alt="Weibo" /></a>
+            <a href="#" :class="$style.socialLink"><img src="/icon/bilibili.png" alt="Bilibili" /></a>
+          </div>
+        </div>
 
-    </div>
+        <!-- 导航链接 -->
+        <div :class="$style.linksGroup">
+          <div :class="$style.linkColumn">
+            <h4 :class="$style.columnTitle">导航</h4>
+            <NuxtLink :class="$style.link" to="/">首页</NuxtLink>
+            <NuxtLink :class="$style.link" to="/passages">文章</NuxtLink>
+            <NuxtLink :class="$style.link" to="/archive">归档</NuxtLink>
+          </div>
 
-  </div>
+          <div :class="$style.linkColumn">
+            <h4 :class="$style.columnTitle">关于</h4>
+            <NuxtLink :class="$style.link" to="/myself">关于我</NuxtLink>
+            <NuxtLink :class="$style.link" to="/backGround">背景</NuxtLink>
+            <NuxtLink :class="$style.link" to="/">留言板</NuxtLink>
+          </div>
+
+          <div :class="$style.linkColumn">
+            <h4 :class="$style.columnTitle">联系</h4>
+            <a :class="$style.link" href="mailto:contact@example.com">邮箱</a>
+            <a :class="$style.link" href="#">Twitter</a>
+            <a :class="$style.link" href="#">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部版权 -->
+      <div :class="$style.bottom">
+        <p :class="$style.copyright">© {{ currentYear }} RyaoVen. All rights reserved.</p>
+        <p :class="$style.tech">Built with Nuxt.js & Element Plus</p>
+      </div>
+    </div>
+  </footer>
 </template>
 
 <style module>
-.body {
-  background-color: #2c3e50;
-  height: 12vh;
-  width: 100vw;
+.footer {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: #fff;
+  margin-top: 80px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px 30px;
+}
+
+.content {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: 60px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+/* 品牌区 */
+.brand {
+  flex: 1;
+  min-width: 250px;
+}
+
+.brandName {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brandDesc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 20px 0;
+  line-height: 1.6;
+}
+
+.social {
+  display: flex;
+  gap: 12px;
+}
+
+.socialLink {
+  width: 36px;
+  height: 36px;
+  display: flex;
   align-items: center;
-  color: #ecf0f1;
-  padding: 20px 0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.links {
-  text-decoration: none;
-  color: #ecf0f1;
-  position: relative;
-  padding: 2px 0;
-  font-weight: 500;
-  transition: color 0.3s ease;
-  overflow: hidden;
+.socialLink:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  border-color: rgba(52, 152, 219, 0.5);
 }
 
-.links::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #3498db;
-  transition: width 0.3s ease;
-  transform-origin: left;
+.socialLink img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  opacity: 0.8;
 }
 
-.links:hover {
-  color: #3498db;
+.socialLink:hover img {
+  opacity: 1;
 }
 
-.links:hover::after {
-  width: 100%;
-  box-shadow: 0 0 8px rgba(52, 152, 219, 0.8);
+/* 链接组 */
+.linksGroup {
+  display: flex;
+  gap: 60px;
+  flex: 2;
+  justify-content: flex-end;
 }
 
-.linksList {
+.linkColumn {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: end;
-  gap: 8px;
-  padding: 10px;
-  transition: transform 0.3s ease;
+  gap: 12px;
 }
 
-.linksList:hover {
-  transform: translateY(-3px);
+.columnTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.linksList span {
-  margin-bottom: 5px;
-  font-size: 0.9rem;
-  opacity: 0.8;
+.link {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  width: fit-content;
+}
+
+.link:hover {
+  color: #3498db;
+  padding-left: 4px;
+}
+
+/* 底部版权 */
+.bottom {
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.copyright,
+.tech {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .linksGroup {
+    gap: 40px;
+    justify-content: flex-start;
+  }
+
+  .bottom {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 </style>
