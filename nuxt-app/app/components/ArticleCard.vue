@@ -1,53 +1,29 @@
 <script setup lang="ts">
-const props = defineProps({
-  title: {
-    type: String,
-    default: "文章标题"
-  },
-  author: {
-    type: String,
-    default: "作者"
-  },
-  date: {
-    type: String,
-    default: "2023-05-15"
-  },
-  category: {
-    type: String,
-    default: "分类"
-  },
-  tags: {
-    type: Array,
-    default: () => ["标签1", "标签2"]
-  },
-  summary: {
-    type: String,
-    default: "这是文章的简介，描述了文章的主要内容和亮点..."
-  },
-  coverImage: {
-    type: String,
-    default: "/images/default-cover.jpg"
-  }
-})
+defineProps<{
+  title: string;
+  author: string;
+  date: string;
+  category: string;
+  tags: string[];
+  summary: string;
+  coverImage: string;
+}>();
 </script>
 
 <template>
   <div :class="$style.card">
-    <div :class="$style.coverContainer">
-      <img :src="coverImage" :class="$style.coverImage" alt="文章封面" />
+    <div :class="$style.coverImage" :style="{ backgroundImage: `url(${coverImage})` }">
       <div :class="$style.category">{{ category }}</div>
     </div>
     <div :class="$style.content">
       <h3 :class="$style.title">{{ title }}</h3>
-      <p :class="$style.summary">{{ summary }}</p>
       <div :class="$style.meta">
-        <div :class="$style.authorDate">
-          <span :class="$style.author">{{ author }}</span>
-          <span :class="$style.date">{{ date }}</span>
-        </div>
-        <div :class="$style.tags">
-          <span v-for="(tag, index) in tags" :key="index" :class="$style.tag">{{ tag }}</span>
-        </div>
+        <span :class="$style.author">{{ author }}</span>
+        <span :class="$style.date">{{ date }}</span>
+      </div>
+      <p :class="$style.summary">{{ summary }}</p>
+      <div :class="$style.tags">
+        <el-tag v-for="tag in tags" :key="tag" size="small" effect="plain">{{ tag }}</el-tag>
       </div>
     </div>
   </div>
@@ -56,35 +32,30 @@ const props = defineProps({
 <style module>
 .card {
   width: 100%;
-  max-width: 680px;
-  height: auto;
-  border-radius: 12px;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 16px;
   overflow: hidden;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.coverContainer {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  border-color: rgba(52, 152, 219, 0.2);
 }
 
 .coverImage {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  transition: all 0.4s ease;
 }
 
 .card:hover .coverImage {
@@ -93,77 +64,64 @@ const props = defineProps({
 
 .category {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #ffffff;
-  padding: 4px 12px;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  color: #3498db;
+  padding: 8px 16px;
   border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .content {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  padding: 24px;
 }
 
 .title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
   line-height: 1.4;
-}
-
-.summary {
-  margin: 0;
-  font-size: 14px;
-  color: #666;
-  line-height: 1.6;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  letter-spacing: -0.3px;
 }
 
 .meta {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 8px;
-}
-
-.authorDate {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #666;
 }
 
 .author {
-  font-size: 13px;
   font-weight: 500;
-  color: #444;
 }
 
 .date {
-  font-size: 12px;
-  color: #888;
+  color: #999;
+}
+
+.summary {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 16px 0;
 }
 
 .tags {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
-.tag {
-  background-color: #f5f5f5;
+.tags :global(.el-tag) {
+  border: 1px solid #e8e8e8;
+  background: #f8f9fa;
   color: #666;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 11px;
+  font-size: 12px;
 }
 </style>

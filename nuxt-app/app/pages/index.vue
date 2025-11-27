@@ -248,7 +248,28 @@ function click() {
 .btns{
   display: flex;
   flex-direction: row;
-  gap: 3px;
+  gap: 8px;
+}
+
+.btns :global(.el-button) {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.btns :global(.el-button:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.btns :global(.el-button) img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 .h1{
   margin: 0;
@@ -256,62 +277,81 @@ function click() {
 
 }
 .body{
-  background-color: #ffffff;
+  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
+  min-height: 100vh;
 }
 
 .hero{
   height: 100vh;
   width: 68vw;
+  max-width: 1200px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-
+  gap: 60px;
 }
 
 .heroText{
-
-  height: 25vh;
-  width: 50%;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-
 }
 
 .heroImg{
-
-  height: 25vh;
-  width: 50%;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-
-
 }
 .tags{
   display: flex;
   flex-direction: row;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tags :global(.el-tag) {
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #666;
+  font-size: 13px;
+  padding: 6px 14px;
 }
 .container{
   display: flex;
   flex-direction: column;
-  align-items: start;
-  gap: 15px;
+  align-items: flex-start;
+  gap: 20px;
   justify-content: center;
+}
 
+.container h1 {
+  font-size: 48px;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.5px;
+}
+
+.container span {
+  font-size: 18px;
+  color: #666;
+  font-weight: 400;
 }
 .avatar{
-  box-shadow:
-      0 2px 4px rgba(0, 0, 0, 0.05),  /* 底层浅阴影 */
-      0 8px 16px rgba(0, 0, 0, 0.1); /* 上层深阴影 */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
 }
 .sectionContainer {
   width: 80vw;
@@ -331,16 +371,18 @@ function click() {
 }
 
 .sectionTitle {
-  font-size: 28px;
-  font-weight: 600;
-  color: #333;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
   margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
 }
 
 .sectionLine {
-  width: 60px;
-  height: 3px;
-  background-color: #3498db;
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+  border-radius: 2px;
   margin-top: 8px;
 }
 

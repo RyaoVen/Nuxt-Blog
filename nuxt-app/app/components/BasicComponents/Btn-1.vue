@@ -13,41 +13,47 @@ const props= defineProps({
 
 <style module>
 .containerTop{
-
-  height: 35px;
-  width: 60px;
-  border-radius: 18px;
-
-  background-color: rgba(255, 255, 255, 0.2); /* 白色半透明背景 */
-  backdrop-filter: blur(10px); /* 背景模糊程度，数值越大越模糊 */
-  -webkit-backdrop-filter: blur(10px); /* 兼容Safari */
-
-  /* 增强质感：边框和阴影 */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* 半透明边框 */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* 柔和阴影 */
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: all 0.235s ease
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
+
+.containerTop::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+  transition: width 0.3s ease;
+}
+
+.containerTop:hover::before {
+  width: 80%;
+}
+
 .containerTop:hover{
-  background-color: rgba(255, 255, 255, 0.45); /* 白色半透明背景 */
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  box-shadow: 0 0 15px rgba(0, 120, 255, 0.6); /* 蓝色荧光效果 */
-  transform: translateY(-2px);
+  background: rgba(52, 152, 219, 0.05);
 }
 
 .containerTop:hover span {
-  color: #0078ff;
-}
-span{
-  color: rgb(96, 96, 96);
-  text-shadow:
-      0 0 5px rgba(255, 255, 255, 0.9),
-      0 0 10px rgba(255, 255, 255, 0.7),
-      0 0 15px rgba(255, 255, 255, 0.5),
-      0 0 20px rgba(255, 255, 255, 0.3);
+  color: #3498db;
 }
 
+span{
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
 </style>
