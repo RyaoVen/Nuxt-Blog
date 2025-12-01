@@ -79,7 +79,7 @@ const friendLinks = ref([
 ]);
 
 // 原始字符串（可自定义）
-const originalText = "Hi, here is RyaoVen.";
+const originalText = TextH1;
 // 存储每个字符的状态：原ASCII码、当前ASCII码、是否正在归位动画中
 const charStates = ref<Array<{
   originalCode: number; // 原字符ASCII码
@@ -157,6 +157,21 @@ onMounted(() => {
 function click() {
   window.scrollTo({top: 1200, behavior: 'smooth'})
 }
+
+const tags = [
+  { effect: 'light', type: 'info', text: '全栈Web工程师', id: 1 },
+  { effect: 'light', type: 'info', text: '摄影爱好者', id: 2 },
+  { effect: 'light', type: 'info', text: '音乐发烧友', id: 3 },
+  { effect: 'light', type: 'info', text: '进步主义者', id: 4 },
+]as const;
+
+const btns = [
+  {src: '/icon/github.png', link:"",id:1 },
+  {src: '/icon/gitee.png', link:"",id:2 },
+  {src: '/icon/weibo.png', link:"",id:3 },
+  {src: '/icon/leetcode.png', link:"",id:4 },
+  {src: '/icon/bilibili.png', link:"",id:5 },
+]
 </script>
 
 <template>
@@ -169,19 +184,16 @@ function click() {
       <div :class="$style.container">
         <h1 :class="$style.h1">{{currentText}}</h1>
         <div :class="$style.tags">
-          <el-tag round effect="light" :type="'info'">全栈Web工程师</el-tag>
-          <el-tag round effect="light" :type="'info'">摄影爱好者</el-tag>
-          <el-tag round effect="light" :type="'info'">音乐发烧友</el-tag>
-          <el-tag round effect="light" :type="'info'">进步主义者</el-tag>
+          <el-tag
+              v-for="tag in tags"
+              round
+              :effect="tag.effect"
+              :type="tag.type"
+          >{{tag.text}}</el-tag>
         </div>
         <span>{{TextSpan}}</span>
         <div :class="$style.btns">
-          <el-button circle size=""><img src="/icon/github.png"></el-button>
-          <el-button circle><img src="/icon/gitee.png"></el-button>
-          <el-button circle><img src="/icon/weibo.png"></el-button>
-          <el-button circle><img src="/icon/leetcode.png"></el-button>
-          <el-button circle><img src="/icon/bilibili.png"></el-button>
-
+          <el-button circle v-for="btn in btns" :key="btn.id"><img :src="btn.src" ></el-button>
         </div>
       </div>
     </div>

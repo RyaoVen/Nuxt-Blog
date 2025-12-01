@@ -4,7 +4,7 @@ import { Calendar, Document, TrendCharts } from '@element-plus/icons-vue';
 
 // 文章归档数据
 const articles = ref([
-  { id: 1, title: "深入理解 Vue 3 Composition API", date: "2024-11-15", category: "前端开发", views: 1234 },
+  { id: 1, title: "深入理解 Vue 3 Composition API", date: "2025-11-15", category: "前端开发", views: 1234 },
   { id: 2, title: "TypeScript 类型体操实战指南", date: "2024-11-10", category: "编程语言", views: 2156 },
   { id: 3, title: "现代 CSS 布局技术全解析", date: "2024-11-05", category: "CSS", views: 1876 },
   { id: 4, title: "Nuxt 3 全栈开发实践", date: "2024-10-28", category: "全栈开发", views: 3421 },
