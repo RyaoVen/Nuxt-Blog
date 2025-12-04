@@ -229,6 +229,14 @@ const btns = [
         :summary="article.summary"
         :coverImage="article.coverImage"
       />
+      <HotPassageCard
+          title="热门文章"
+          author="RyaoVen"
+          :views="1234"
+          :tags="['热门', '推荐']"
+          coverImage="/Avatar.jpg"
+      />
+    </div>
     </div>
   </div>
 
@@ -250,7 +258,7 @@ const btns = [
         :screenshot="link.screenshot"
         :url="link.url"
       />
-    </div>
+
   </div>
 
 </div>
