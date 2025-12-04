@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{
+import {ref} from "vue";
+
+const props = defineProps<{
   title: string;
   author: string;
   date: string;
@@ -8,120 +10,141 @@ defineProps<{
   summary: string;
   coverImage: string;
 }>();
+type TagType = 'success' | 'warning' | 'info' | 'danger' | 'primary';
+interface TagItem {
+  tagName: string;
+  type: TagType; // 普通字符串类型
+}
+const hoveredTag = ref<string | null>(null);
+
+const tagList = ref<TagItem[]>(
+    props.tags.map(tag => reactive({ tagName: tag, type: 'info' as const }))
+);
+
+
 </script>
 
 <template>
-  <div :class="$style.card">
-    <div :class="$style.coverImage" :style="{ backgroundImage: `url(${coverImage})` }">
-      <div :class="$style.category">{{ category }}</div>
-    </div>
-    <div :class="$style.content">
-      <h3 :class="$style.title">{{ title }}</h3>
-      <div :class="$style.meta">
-        <span :class="$style.author">{{ author }}</span>
-        <span :class="$style.date">{{ date }}</span>
+  <div :class="$style.articleCard">
+    <div :class="$style.top">
+      <div :class="$style.topLeft">
+        <div>
+          {{date}}
+        </div>
+        <span :class="$style.sp">
+          |
+        </span>
+        <div>
+          {{category}}
+        </div>
       </div>
-      <p :class="$style.summary">{{ summary }}</p>
-      <div :class="$style.tags">
-        <el-tag v-for="tag in tags" :key="tag" size="small" effect="plain">{{ tag }}</el-tag>
+      <div :class="$style.topRight">
+        <div>
+          {{author}}
+        </div>
       </div>
     </div>
+
+
+    <div :class="$style.title">
+      {{title}}
+    </div>
+    <div :class="$style.summary">
+      {{summary}}
+    </div>
+    <el-tag
+        :class="$style.tag"
+    v-for="tag in tagList"
+    :key="tag.tagName"
+    round
+    effect="light"
+        :type="tag.type"
+    size="small"
+    style=" margin: 0 2px;"
+        @mouseover="tag.type = 'primary'"
+        @mouseleave="tag.type = 'info'"
+    >
+      {{tag.tagName}}
+    </el-tag>
   </div>
 </template>
 
 <style module>
-.card {
-  width: 100%;
-  max-width: 800px;
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.tag {
+  opacity: 0;
+  transition: all 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(10px);
+  margin: 0 4px 4px 0; /* 改用 margin 控制间距，避免行内 style */
+  font-size: 0.85em;
+  letter-spacing: 0.5px;
+}
+
+.articleCard:hover .tag {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.articleCard {
+  width: 600px;
+  max-height: 160px;
+  border: 1px solid transparent; /* 更干净的初始状态 */
+  border-radius: 8px; /* 增加圆角，更现代 */
+  padding: 16px;
+  background-color: #fff; /* 显式背景，避免透明问题 */
+  transition: all 0.3s ease;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden; /* 防止 hover 展开时布局跳动 */
+}
+
+.articleCard:hover {
+  border-color: #dcdfe6; /* 使用 Element Plus 默认边框色 */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08); /* 稍微柔和但有层次的阴影 */
   cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  max-height: 300px;
 }
 
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-  border-color: rgba(52, 152, 219, 0.2);
+.top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  color: #909399; /* 次要文字色，更柔和 */
+  margin-bottom: 8px;
 }
 
-.coverImage {
-  width: 100%;
-  height: 220px;
-  background-size: cover;
-  background-position: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  position: relative;
-  transition: all 0.4s ease;
+.topLeft,
+.topRight {
+  display: flex;
+  align-items: center; /* 垂直居中 */
 }
 
-.card:hover .coverImage {
-  transform: scale(1.05);
-}
 
-.category {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  color: #3498db;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.content {
-  padding: 24px;
+.sp {
+  margin: 0 6px;
+  color: #c0c4cc; /* 分隔符更淡 */
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 12px 0;
+  font-size: 1.4em; /* 稍微收敛一点，避免过大 */
+  font-weight: 600; /* 使用 semi-bold 更优雅 */
+  margin: 6px 0;
   line-height: 1.4;
-  letter-spacing: -0.3px;
+  color: #303133; /* 默认标题色 */
+  transition: color 0.3s ease;
 }
 
-.meta {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 12px;
-  font-size: 14px;
-  color: #666;
-}
-
-.author {
-  font-weight: 500;
-}
-
-.date {
-  color: #999;
+.articleCard:hover .title {
+  color: #409eff;
 }
 
 .summary {
-  font-size: 15px;
-  color: #666;
-  line-height: 1.6;
-  margin: 0 0 16px 0;
-}
-
-.tags {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.tags :global(.el-tag) {
-  border: 1px solid #e8e8e8;
-  background: #f8f9fa;
-  color: #666;
-  font-size: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* hover 前显示两行摘要，信息量更足 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.95em;
+  line-height: 1.5;
+  color: #606266;
+  margin: 0 8px;
 }
 </style>

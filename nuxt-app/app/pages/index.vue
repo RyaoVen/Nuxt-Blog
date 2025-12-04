@@ -411,7 +411,7 @@ const btns = [
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
-  padding: 20px 0;
+  gap: 0;
+  padding: 0;
 }
 </style>
