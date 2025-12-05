@@ -213,22 +213,30 @@ const btns = [
   <el-divider />
 
   <div :class="$style.sectionContainer">
-    <div :class="$style.sectionHeader">
-      <h2 :class="$style.sectionTitle">最近文章</h2>
-      <div :class="$style.sectionLine"></div>
-    </div>
-    <div :class="$style.articlesContainer">
-      <ArticleCard 
-        v-for="(article, index) in articles" 
-        :key="index"
-        :title="article.title"
-        :author="article.author"
-        :date="article.date"
-        :category="article.category"
-        :tags="article.tags"
-        :summary="article.summary"
-        :coverImage="article.coverImage"
-      />
+
+    <div :class="$style.articles">
+      <div style="display: flex; flex-direction: column; align-items: start; gap: 10px;">
+        <h1 :class="$style.sectionTitle">
+          最近
+        </h1>
+        <div :class="$style.articlesContainer">
+          <ArticleCard
+              v-for="(article, index) in articles"
+              :key="index"
+              :title="article.title"
+              :author="article.author"
+              :date="article.date"
+              :category="article.category"
+              :tags="article.tags"
+              :summary="article.summary"
+              :coverImage="article.coverImage"
+          />
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: start; gap: 10px;">
+        <h1 :class="$style.sectionTitle">
+          最热
+        </h1>
       <HotPassageCard
           title="热门文章"
           author="RyaoVen"
@@ -236,6 +244,7 @@ const btns = [
           :tags="['热门', '推荐']"
           coverImage="/Avatar.jpg"
       />
+      </div>
     </div>
     </div>
   </div>
@@ -374,12 +383,14 @@ const btns = [
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
 }
 .sectionContainer {
+
   width: 80vw;
   max-width: 1200px;
   margin: 60px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .sectionHeader {
@@ -394,7 +405,7 @@ const btns = [
   font-size: 32px;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 0 0 12px 0;
+  margin-left:4px;
   letter-spacing: -0.5px;
 }
 
@@ -405,13 +416,18 @@ const btns = [
   border-radius: 2px;
   margin-top: 8px;
 }
-
+.articles{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap:4vw;
+}
 .articlesContainer {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
 }
 
 .friendLinksContainer {
@@ -419,7 +435,7 @@ const btns = [
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0;
+  gap: 30px;
   padding: 0;
 }
 </style>

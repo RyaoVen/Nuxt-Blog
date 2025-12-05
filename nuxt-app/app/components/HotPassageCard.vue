@@ -1,192 +1,98 @@
 <template>
-  <div :class="$style.card" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-    <!-- 封面图区域 -->
-    <div :class="$style.cover">
-      <img :src="coverImage || defaultCover" :alt="title" :class="$style.img" />
-      <div :class="$style.gradientOverlay"></div>
-    </div>
-
-    <!-- 右上角旋转圆环装饰 -->
-    <div :class="$style.orbitContainer">
-      <div :class="$style.orbit">
-        <span
-            v-for="(label, i) in orbitLabels"
-            :key="i"
-            :class="$style.orbitItem"
-            :style="{
-    transform: `translateX(-50%) rotate(${(i * 360) / orbitLabels.length}deg)`
-  }"
-        >
-          {{ label }}
-        </span>
-      </div>
-    </div>
-
-    <!-- 内容区 -->
+  <div :class="$style.passageCard">
+    <img src="/Avatar.jpg" :class="$style.bgImage" />
+    <div :class="$style.overlay"></div>
     <div :class="$style.content">
-      <div :class="$style.title">{{ title }}</div>
-      <div :class="$style.meta">
-        <span :class="$style.author">{{ author }}</span>
-        <span :class="$style.views">• {{ views || 0 }} 阅读</span>
-      </div>
-      <div :class="$style.tags">
-        <el-tag
-            v-for="tag in tags"
-            :key="tag"
-            size="small"
-            type="info"
-            effect="plain"
-            style="margin-right: 4px; font-size: 0.8em;"
-        >
-          {{ tag }}
-        </el-tag>
-      </div>
+      <div :class="$style.title">测试标题</div>
+      <div :class="$style.summary">这里面是一段测试用的内容</div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const props = defineProps<{
-  title: string;
-  author: string;
-  coverImage?: string; // 可选
-  tags: string[];
-  views?: number;
-}>();
-
-// 悬停状态（用于未来扩展，如延迟动画）
-const isHovered = ref(false);
-
-// 旋转标签（可自定义）
-const orbitLabels = ['热','门','文','章','很','值','得','阅','读'];
-
-// 默认封面（防止图片加载失败）
-const defaultCover = 'https://via.placeholder.com/320x200/e0e0e0/999999?text=No+Cover';
-</script>
-
 <style module>
-/* 卡片整体 */
-.card {
-  width: 320px;
-  border-radius: 16px;
-  z-index: 1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  background: #fff;
+.passageCard {
   position: relative;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  z-index: 1;
-}
-
-/* 封面图 */
-.cover {
-  position: relative;
-  height: 200px;
+  width: 300px;
+  height: 500px;
+  border-radius: 10px;
   overflow: hidden;
-  z-index: 1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: box-shadow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.img {
-  opacity: 0.90;
+.passageCard:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.bgImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
-  border-radius: 16px 16px 0 0;
-}
-
-.card:hover .img {
-  transform: scale(1.05);
-}
-
-.gradientOverlay {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
-  pointer-events: none;
+  z-index: 0;
 }
 
-/* === 右上角旋转圆环装饰 === */
-.orbitContainer {
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  width: 80px;
-  height: 80px;
-  pointer-events: none; /* 不阻挡点击 */
-  z-index: -1;
-}
-
-.orbit {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  animation: rotate 20s linear infinite;
-  transform-origin: center;
-}
-
-.orbitItem {
+.overlay {
   position: absolute;
   top: 0;
-  left: 50%;
-  transform-origin: 0 50px; /* 旋转半径 = 40px */
-  z-index: -1;
-  font-size: 12px;
-  font-weight: bold;
-  color: #303133;
-  opacity: 1;
-  white-space: nowrap;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: 0.9;
+  z-index: 1;
+  transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes rotate {
-  to {
-    transform: rotate(360deg);
-  }
+.passageCard:hover .overlay {
+  opacity: 0.7;
 }
 
-/* 内容区 */
 .content {
-  padding: 16px;
-  color: #333;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  z-index: 2;
+  transition: bottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.passageCard:hover .content {
+  bottom: 24px;
 }
 
 .title {
-  font-size: 1.1em;
-  font-weight: 600;
-  margin: 0 0 8px;
-  line-height: 1.4;
-  color: #2c3e50;
-}
-
-.meta {
-  display: flex;
-  align-items: center;
-  font-size: 0.85em;
-  color: #7f8c8d;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #303133;
   margin-bottom: 8px;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.author {
-  font-weight: 500;
+.passageCard:hover .title {
+  transform: translateY(-4px);
 }
 
-.views {
-  margin-left: 8px;
+/* 关键：summary 默认在下方隐藏 */
+.summary {
+  font-size: 1em;
+  color: #606266;
+  opacity: 0;
+  transform: translateY(10px); /* 向下偏移 */
+  transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
 }
 
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+.passageCard:hover .summary {
+  opacity: 1;
+  transform: translateY(0); /* 滑入 */
 }
 </style>
+
+<script setup lang="ts">
+</script>

@@ -315,6 +315,8 @@ const handleRegister = () => {
 
 <style module>
 .containerTop{
+  width: 100%;
+  position: fixed;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   height: 64px;
