@@ -161,7 +161,7 @@ const navigateToArticle = (id: number) => {
         <div :class="$style.sidebarCard">
           <h3 :class="$style.sidebarTitle">
             <el-icon><Star /></el-icon>
-            热门文章
+            热门
           </h3>
           <div :class="$style.hotList">
             <div 
@@ -202,8 +202,7 @@ const navigateToArticle = (id: number) => {
       <!-- 中间主内容 - 文章列表 -->
       <main :class="$style.mainContent">
         <div :class="$style.pageHeader">
-          <h1 :class="$style.pageTitle">全部文章</h1>
-          <p :class="$style.pageDesc">探索技术世界，分享开发经验</p>
+          <h1 :class="$style.pageTitle">全部</h1>
         </div>
 
         <div :class="$style.articleList">
@@ -262,13 +261,9 @@ const navigateToArticle = (id: number) => {
               v-for="tag in tags" 
               :key="tag.name"
               :class="$style.tagItem"
-              :style="{ 
-                fontSize: `${12 + Math.min(tag.count / 2, 8)}px`,
-                color: tag.color 
-              }"
             >
               {{ tag.name }}
-              <span :class="$style.tagCount">({{ tag.count }})</span>
+              <span :class="$style.tagCount">{{ tag.count }}</span>
             </span>
           </div>
         </div>
@@ -294,16 +289,17 @@ const navigateToArticle = (id: number) => {
 
 /* 页面头部 */
 .pageHeader {
-  margin-bottom: 40px;
-  text-align: center;
+  margin-bottom: 15px;
+  margin-top: 20px;
+  margin-left: 8px;
+  text-align: start;
 }
 
 .pageTitle {
-  font-size: 42px;
+  font-size: 32px;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 0 0 12px 0;
-  letter-spacing: -1px;
+  margin: 0 0 5px 0;
 }
 
 .pageDesc {
@@ -573,24 +569,25 @@ const navigateToArticle = (id: number) => {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  line-height: 2;
+
 }
 
 .tagItem {
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid;
+  padding: 4px 8px;
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(5px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid transparent;
 }
 
 .tagItem:hover {
   background: rgba(255, 255, 255, 0.6);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .tagCount {
