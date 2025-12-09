@@ -170,7 +170,7 @@ const navigateToArticle = (id: number) => {
               :class="$style.hotItem"
               @click="navigateToArticle(article.id)"
             >
-              <span :class="[$style.hotRank, index < 3 ? $style.hotRankTop : '']">
+              <span :class="$style.hotRank">
                 {{ index + 1 }}
               </span>
               <div :class="$style.hotContent">
@@ -272,29 +272,6 @@ const navigateToArticle = (id: number) => {
             </span>
           </div>
         </div>
-
-        <div :class="$style.sidebarCard">
-          <h3 :class="$style.sidebarTitle">关于博主</h3>
-          <div :class="$style.authorCard">
-            <el-avatar :size="80" src="/Avatar.jpg" :class="$style.authorAvatar" />
-            <h4 :class="$style.authorName">RyaoVen</h4>
-            <p :class="$style.authorDesc">全栈开发者 · 技术分享者</p>
-            <div :class="$style.authorStats">
-              <div :class="$style.statItem">
-                <span :class="$style.statValue">128</span>
-                <span :class="$style.statLabel">文章</span>
-              </div>
-              <div :class="$style.statItem">
-                <span :class="$style.statValue">2.5K</span>
-                <span :class="$style.statLabel">阅读</span>
-              </div>
-              <div :class="$style.statItem">
-                <span :class="$style.statValue">356</span>
-                <span :class="$style.statLabel">点赞</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </aside>
     </div>
   </div>
@@ -378,33 +355,36 @@ const navigateToArticle = (id: number) => {
   gap: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  padding: 8px;
-  border-radius: 8px;
+  padding: 12px 12px 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
 }
 
 .hotItem:hover {
-  background: #f8f9fa;
-  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transform: translate(-2px,-2px);
+}
+.hotItem:hover .hotTitle{
+  color: #3498db;
+
 }
 
 .hotRank {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e8e8e8;
-  color: #666;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
+  padding-bottom: 6px;
+  padding-top: 6px;
+  border-bottom: 2px solid #3498db;
 }
 
-.hotRankTop {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: #fff;
-}
+
 
 .hotContent {
   flex: 1;
@@ -412,6 +392,7 @@ const navigateToArticle = (id: number) => {
 }
 
 .hotTitle {
+  transition:color 0.3s ease;
   font-size: 14px;
   color: #333;
   margin: 0 0 6px 0;
@@ -421,6 +402,7 @@ const navigateToArticle = (id: number) => {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  font-weight: 600;
 }
 
 .hotViews {
@@ -428,6 +410,7 @@ const navigateToArticle = (id: number) => {
   color: #999;
   display: flex;
   align-items: center;
+  justify-content: end;
   gap: 4px;
 }
 
@@ -447,17 +430,23 @@ const navigateToArticle = (id: number) => {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  border:1px solid transparent;
 }
 
 .categoryItem:hover {
-  background: #e8e8e8;
-  transform: translateX(4px);
+  transform: translate(-2px,-2px);
+  box-shadow:0 4px 12px rgba(0, 0, 0, 0.08);
+  border:1px solid rgba(0, 0, 0, 0.08);
 }
 
 .categoryName {
+  transition: all 0.3s ease;
   font-size: 14px;
   color: #333;
   font-weight: 500;
+}
+.categoryItem:hover .categoryName {
+  color: #3498db;
 }
 
 .categoryCount {
@@ -610,58 +599,6 @@ const navigateToArticle = (id: number) => {
   margin-left: 4px;
 }
 
-/* 作者卡片 */
-.authorCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.authorAvatar {
-  margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.authorName {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 8px 0;
-}
-
-.authorDesc {
-  font-size: 13px;
-  color: #666;
-  margin: 0 0 20px 0;
-}
-
-.authorStats {
-  display: flex;
-  gap: 24px;
-  width: 100%;
-  justify-content: center;
-  padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.statItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.statValue {
-  font-size: 20px;
-  font-weight: 700;
-  color: #3498db;
-  margin-bottom: 4px;
-}
-
-.statLabel {
-  font-size: 12px;
-  color: #999;
-}
 
 /* 分页 */
 .pagination {
