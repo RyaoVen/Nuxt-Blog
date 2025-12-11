@@ -1,12 +1,12 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {
   ArrowDownBold,
-    
+
 } from '@element-plus/icons-vue'
 
-const TextH1:string = "Hi,here is RyaoVen."
-const TextSpan:string = "I won't stop."
-import { ref, onMounted } from 'vue';
+const TextH1: string = "Hi,here is RyaoVen."
+const TextSpan: string = "I won't stop."
+import {ref, onMounted} from 'vue';
 import CardPassage from "~/components/CardPassage.vue";
 import ArticleCard from "~/components/ArticleCard.vue";
 import FriendLinkCard from "~/components/FriendLinkCard.vue";
@@ -106,7 +106,7 @@ const initCharStates = () => {
     const originalCode = char.charCodeAt(0);
     // 初始偏移：ASCII码 +15（处理边界）
     const currentCode = clampAscii(originalCode + 8);
-    return { originalCode, currentCode, isAnimating: false };
+    return {originalCode, currentCode, isAnimating: false};
   });
   // 初始化显示
   updateCurrentText();
@@ -159,122 +159,123 @@ function click() {
 }
 
 const tags = [
-  { effect: 'light', type: 'info', text: '全栈Web工程师', id: 1 },
-  { effect: 'light', type: 'info', text: '摄影爱好者', id: 2 },
-  { effect: 'light', type: 'info', text: '音乐发烧友', id: 3 },
-  { effect: 'light', type: 'info', text: '进步主义者', id: 4 },
-]as const;
+  {effect: 'light', type: 'info', text: '全栈Web工程师', id: 1},
+  {effect: 'light', type: 'info', text: '摄影爱好者', id: 2},
+  {effect: 'light', type: 'info', text: '音乐发烧友', id: 3},
+  {effect: 'light', type: 'info', text: '进步主义者', id: 4},
+] as const;
 
 const btns = [
-  {src: '/icon/github.png', link:"",id:1 },
-  {src: '/icon/gitee.png', link:"",id:2 },
-  {src: '/icon/weibo.png', link:"",id:3 },
-  {src: '/icon/leetcode.png', link:"",id:4 },
-  {src: '/icon/bilibili.png', link:"",id:5 },
+  {src: '/icon/github.png', link: "", id: 1},
+  {src: '/icon/gitee.png', link: "", id: 2},
+  {src: '/icon/weibo.png', link: "", id: 3},
+  {src: '/icon/leetcode.png', link: "", id: 4},
+  {src: '/icon/bilibili.png', link: "", id: 5},
 ]
 </script>
 
 <template>
-<div :class="$style.body">
+  <div :class="$style.body">
 
 
-  <div :class="$style.hero">
+    <div :class="$style.hero">
 
-    <div :class="$style.heroText">
-      <div :class="$style.container">
-        <h1 :class="$style.h1">{{currentText}}</h1>
-        <div :class="$style.tags">
-          <el-tag
-              v-for="tag in tags"
-              round
-              :effect="tag.effect"
-              :type="tag.type"
-          >{{tag.text}}</el-tag>
-        </div>
-        <span>{{TextSpan}}</span>
-        <div :class="$style.btns">
-          <el-button circle v-for="btn in btns" :key="btn.id"><img :src="btn.src" ></el-button>
+      <div :class="$style.heroText">
+        <div :class="$style.container">
+          <h1 :class="$style.h1">{{ currentText }}</h1>
+          <div :class="$style.tags">
+            <el-tag
+                v-for="tag in tags"
+                :effect="tag.effect"
+                :type="tag.type"
+                round
+            >{{ tag.text }}
+            </el-tag>
+          </div>
+          <span>{{ TextSpan }}</span>
+          <div :class="$style.btns">
+            <el-button v-for="btn in btns" :key="btn.id" circle><img :src="btn.src"></el-button>
+          </div>
         </div>
       </div>
+
+      <div :class="$style.heroImg">
+        <el-avatar :class="$style.avatar"
+                   :size="235"
+                   src="/Avatar.jpg"
+        />
+
+      </div>
+
     </div>
-
-    <div :class="$style.heroImg">
-      <el-avatar :size="235"
-                 :class="$style.avatar"
-          src="/Avatar.jpg"
-      />
-
-    </div>
-
-  </div>
-  <el-button circle :icon="ArrowDownBold"  style="margin-top: -120px;" @click="click()"/>
+    <el-button :icon="ArrowDownBold" circle style="margin-top: -120px;" @click="click()"/>
 
 
-  <el-divider />
+    <el-divider/>
 
-  <div :class="$style.sectionContainer">
+    <div :class="$style.sectionContainer">
 
-    <div :class="$style.articles">
-      <div style="display: flex; flex-direction: column; align-items: start; gap: 10px;">
-        <h1 :class="$style.sectionTitle">
-          最近
-        </h1>
-        <div :class="$style.articlesContainer">
-          <ArticleCard
-              v-for="(article, index) in articles"
-              :key="index"
-              :title="article.title"
-              :author="article.author"
-              :date="article.date"
-              :category="article.category"
-              :tags="article.tags"
-              :summary="article.summary"
-              :coverImage="article.coverImage"
+      <div :class="$style.articles">
+        <div style="display: flex; flex-direction: column; align-items: start; gap: 10px;">
+          <h1 :class="$style.sectionTitle">
+            最近
+          </h1>
+          <div :class="$style.articlesContainer">
+            <ArticleCard
+                v-for="(article, index) in articles"
+                :key="index"
+                :author="article.author"
+                :category="article.category"
+                :coverImage="article.coverImage"
+                :date="article.date"
+                :summary="article.summary"
+                :tags="article.tags"
+                :title="article.title"
+            />
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: start; gap: 10px;">
+          <h1 :class="$style.sectionTitle">
+            最热
+          </h1>
+          <HotPassageCard
+              :tags="['热门', '推荐']"
+              :views="1234"
+              author="RyaoVen"
+              coverImage="/Avatar.jpg"
+              title="热门文章"
           />
         </div>
       </div>
-      <div style="display: flex; flex-direction: column; align-items: start; gap: 10px;">
-        <h1 :class="$style.sectionTitle">
-          最热
-        </h1>
-      <HotPassageCard
-          title="热门文章"
-          author="RyaoVen"
-          :views="1234"
-          :tags="['热门', '推荐']"
-          coverImage="/Avatar.jpg"
-      />
-      </div>
-    </div>
     </div>
   </div>
 
-  <el-divider />
+  <el-divider/>
 
   <div :class="$style.sectionContainer">
     <div :class="$style.sectionHeader">
-      <h2 :class="$style.sectionTitle">友情链接</h2>
+      <h2 :class="$style.sectionTitle">友链</h2>
       <div :class="$style.sectionLine"></div>
     </div>
     <div :class="$style.friendLinksContainer">
-      <FriendLinkCard 
-        v-for="(link, index) in friendLinks" 
-        :key="index"
-        :avatar="link.avatar"
-        :siteName="link.siteName"
-        :ownerName="link.ownerName"
-        :description="link.description"
-        :screenshot="link.screenshot"
-        :url="link.url"
+      <FriendLinkCard
+          v-for="(link, index) in friendLinks"
+          :key="index"
+          :avatar="link.avatar"
+          :description="link.description"
+          :ownerName="link.ownerName"
+          :screenshot="link.screenshot"
+          :siteName="link.siteName"
+          :url="link.url"
       />
 
-  </div>
+    </div>
 
-</div>
+  </div>
 </template>
 
 <style module>
-.btns{
+.btns {
   display: flex;
   flex-direction: row;
   gap: 8px;
@@ -300,12 +301,14 @@ const btns = [
   height: 20px;
   object-fit: contain;
 }
-.h1{
+
+.h1 {
   margin: 0;
   padding: 0;
 
 }
-.body{
+
+.body {
   background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
   display: flex;
   flex-direction: column;
@@ -314,7 +317,7 @@ const btns = [
   min-height: 100vh;
 }
 
-.hero{
+.hero {
   height: 100vh;
   width: 68vw;
   max-width: 1200px;
@@ -325,7 +328,7 @@ const btns = [
   gap: 60px;
 }
 
-.heroText{
+.heroText {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -333,13 +336,14 @@ const btns = [
   justify-content: center;
 }
 
-.heroImg{
+.heroImg {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.tags{
+
+.tags {
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -353,7 +357,8 @@ const btns = [
   font-size: 13px;
   padding: 6px 14px;
 }
-.container{
+
+.container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -373,7 +378,8 @@ const btns = [
   color: #666;
   font-weight: 400;
 }
-.avatar{
+
+.avatar {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   transition: all 0.3s ease;
 }
@@ -382,6 +388,7 @@ const btns = [
   transform: scale(1.05);
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
 }
+
 .sectionContainer {
 
   width: 80vw;
@@ -405,7 +412,7 @@ const btns = [
   font-size: 32px;
   font-weight: 700;
   color: #1a1a1a;
-  margin-left:4px;
+  margin-left: 4px;
   letter-spacing: -0.5px;
 }
 
@@ -416,12 +423,14 @@ const btns = [
   border-radius: 2px;
   margin-top: 8px;
 }
-.articles{
+
+.articles {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap:4vw;
+  gap: 4vw;
 }
+
 .articlesContainer {
   width: 100%;
   display: flex;

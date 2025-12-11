@@ -1,11 +1,15 @@
 import  { defineStore } from "pinia";
 import type { Axios} from "axios";
+import type { Ref} from "vue";
+import { ref } from "vue";
 
 interface IndexState {
     code: number
     massage: string
     date: dateType|null
     isLoading: boolean
+    commentTo: number|null
+    replayTo: number|null
 }
 interface authorType{
     name:string,
@@ -26,14 +30,17 @@ interface dateType{
     moments:momentsType
 }
 
-export const IndexStore = defineStore('moments', {
+
+
+const MomentsStore = defineStore('moments', {
 
     state: (): IndexState => ({
         code: 400,
         massage: '',
         date: null,
         isLoading: false,
-
+        commentTo: null,
+        replayTo:null,
     }),
 
     getters:{
@@ -59,3 +66,5 @@ export const IndexStore = defineStore('moments', {
     }
 
 })
+
+export default MomentsStore;

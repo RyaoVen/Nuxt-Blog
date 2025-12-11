@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import  { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { Clock, View, Calendar, ArrowLeft, ArrowRight, Share, Star } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';

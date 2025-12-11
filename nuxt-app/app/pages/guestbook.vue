@@ -81,10 +81,6 @@ const totalLikes = ref(messages.value.reduce((sum, msg) => sum + msg.likes, 0));
 
 // 提交留言
 const submitMessage = () => {
-  if (!newMessage.value.name.trim()) {
-    ElMessage.warning('请输入您的昵称');
-    return;
-  }
   if (!newMessage.value.content.trim()) {
     ElMessage.warning('请输入留言内容');
     return;
@@ -136,9 +132,6 @@ const deleteMessage = (id: number) => {
   <div :class="$style.container">
     <!-- 页面头部 -->
     <div :class="$style.pageHeader">
-      <div :class="$style.headerIcon">
-        <el-icon :size="48"><ChatDotRound /></el-icon>
-      </div>
       <h1 :class="$style.pageTitle">留言板</h1>
       <p :class="$style.pageDesc">欢迎在这里留下您的足迹和想法</p>
     </div>
@@ -172,27 +165,6 @@ const deleteMessage = (id: number) => {
         <h3 :class="$style.formTitle">发表留言</h3>
         
         <div :class="$style.formFields">
-          <div :class="$style.formRow">
-            <el-input
-              v-model="newMessage.name"
-              placeholder="昵称 *"
-              :class="$style.formInput"
-              size="large"
-            />
-            <el-input
-              v-model="newMessage.email"
-              placeholder="邮箱（选填）"
-              :class="$style.formInput"
-              size="large"
-            />
-            <el-input
-              v-model="newMessage.website"
-              placeholder="网站（选填）"
-              :class="$style.formInput"
-              size="large"
-            />
-          </div>
-
           <el-input
             v-model="newMessage.content"
             type="textarea"
@@ -202,7 +174,7 @@ const deleteMessage = (id: number) => {
           />
 
           <div :class="$style.formActions">
-            <el-button type="primary" size="large" @click="submitMessage" round>
+            <el-button  size="large" @click="submitMessage" plain>
               发表留言
             </el-button>
           </div>
