@@ -2,7 +2,6 @@
 import {ref, computed} from 'vue';
 import {Picture, VideoCamera, Link, Star, ChatDotRound, Share} from '@element-plus/icons-vue';
 import {ElMessage} from 'element-plus';
-
 // 动态数据
 import MomentsStore from '~/stores/moments'
 // 动态/瞬间 模拟数据
