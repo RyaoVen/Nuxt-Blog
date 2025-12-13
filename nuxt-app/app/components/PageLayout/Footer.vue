@@ -24,7 +24,6 @@ const currentYear = new Date().getFullYear();
             <h4 :class="$style.columnTitle">导航</h4>
             <NuxtLink :class="$style.link" to="/">首页</NuxtLink>
             <NuxtLink :class="$style.link" to="/passages">文章</NuxtLink>
-            <NuxtLink :class="$style.link" to="/archive">归档</NuxtLink>
           </div>
 
           <div :class="$style.linkColumn">
