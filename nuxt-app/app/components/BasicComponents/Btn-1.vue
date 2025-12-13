@@ -34,7 +34,7 @@ const props= defineProps({
   transform: translateX(-50%);
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+  background: #3498db;
   transition: width 0.3s ease;
 }
 

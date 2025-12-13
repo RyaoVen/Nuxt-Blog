@@ -83,7 +83,7 @@ const currentYear = new Date().getFullYear();
   font-size: 28px;
   font-weight: 700;
   margin: 0 0 8px 0;
-  background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
+  background: rgba(255, 255, 255, 0.75);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

@@ -368,7 +368,7 @@ const handleRegister = () => {
 .logo span {
   font-size: 20px;
   font-weight: 700;
-  background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
+  background: rgba(0, 0, 0, 0.75);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
