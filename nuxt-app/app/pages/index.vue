@@ -255,7 +255,6 @@ const btns = [
   <div :class="$style.sectionContainer">
     <div :class="$style.sectionHeader">
       <h2 :class="$style.sectionTitle">友链</h2>
-      <div :class="$style.sectionLine"></div>
     </div>
     <div :class="$style.friendLinksContainer">
       <FriendLinkCard

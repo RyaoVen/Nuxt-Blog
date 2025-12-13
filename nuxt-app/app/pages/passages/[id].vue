@@ -485,7 +485,7 @@ const shareArticle = () => {
                 :class="$style.commentInput"
               />
               <div :class="$style.formActions">
-                <el-button type="primary" @click="submitComment" round>发表评论</el-button>
+                <el-button  @click="submitComment" plain>发表评论</el-button>
               </div>
             </div>
           </div>
@@ -557,16 +557,6 @@ const shareArticle = () => {
 
       <!-- 右侧边栏 -->
       <aside :class="$style.rightSidebar">
-        <div :class="$style.sidebarCard">
-          <h3 :class="$style.sidebarTitle">关于作者</h3>
-          <div :class="$style.authorCard">
-            <el-avatar :size="80" :src="article.author.avatar" />
-            <h4 :class="$style.authorCardName">{{ article.author.name }}</h4>
-            <p :class="$style.authorCardBio">{{ article.author.bio }}</p>
-            <el-button type="primary" round size="small">关注</el-button>
-          </div>
-        </div>
-
         <div :class="$style.sidebarCard">
           <h3 :class="$style.sidebarTitle">文章信息</h3>
           <div :class="$style.infoList">
