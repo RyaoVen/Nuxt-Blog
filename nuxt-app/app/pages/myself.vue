@@ -3,29 +3,38 @@ import { ref, computed } from 'vue';
 import { TrendCharts, Trophy, Cpu, Document } from '@element-plus/icons-vue';
 
 // 技术栈数据
-const techStack = ref({
-  frontend: [
-    { name: 'Vue.js', level: 95, color: '#42b883' },
-    { name: 'React', level: 88, color: '#61dafb' },
-    { name: 'TypeScript', level: 90, color: '#3178c6' },
-    { name: 'Nuxt.js', level: 85, color: '#00dc82' },
-    { name: 'Tailwind CSS', level: 92, color: '#06b6d4' }
-  ],
-  backend: [
-    { name: 'Node.js', level: 87, color: '#339933' },
-    { name: 'Express', level: 85, color: '#000000' },
-    { name: 'NestJS', level: 80, color: '#e0234e' },
-    { name: 'MongoDB', level: 82, color: '#47a248' },
-    { name: 'PostgreSQL', level: 78, color: '#336791' }
-  ],
-  tools: [
-    { name: 'Git', level: 93, color: '#f05032' },
-    { name: 'Docker', level: 85, color: '#2496ed' },
-    { name: 'Webpack', level: 88, color: '#8dd6f9' },
-    { name: 'Vite', level: 90, color: '#646cff' },
-    { name: 'VS Code', level: 95, color: '#007acc' }
-  ]
-});
+const techStack = ref([
+  {
+    title: "前端：",
+    content: [
+      { name: 'Vue.js', level: 95, color: '#42b883', type: 'success' },
+      { name: 'React.js', level: 88, color: '#61dafb', type: 'info' },
+      { name: 'TypeScript', level: 90, color: '#3178c6', type: 'warning' },
+      { name: 'Nuxt.js', level: 85, color: '#00dc82' },
+      { name: 'Tailwind CSS', level: 92, color: '#06b6d4', size: 'small' }
+    ]
+  },
+  {
+    title: "后端：",
+    content: [
+      { name: 'Node.js', level: 87, color: '#339933', type: 'success' },
+      { name: 'Express', level: 85, color: '#000000', type: 'danger' },
+      { name: 'NestJS', level: 80, color: '#e0234e' },
+      { name: 'MongoDB', level: 82, color: '#47a248' },
+      { name: 'PostgreSQL', level: 78, color: '#336791' }
+    ]
+  },
+  {
+    title: "工具：",
+    content: [
+      { name: 'Git', level: 93, color: '#f05032' },
+      { name: 'Docker', level: 85, color: '#2496ed' },
+      { name: 'Webpack', level: 88, color: '#8dd6f9' },
+      { name: 'Vite', level: 90, color: '#646cff' },
+      { name: 'VS Code', level: 95, color: '#007acc' }
+    ]
+  }
+]);
 
 // 当前项目
 const currentProjects = ref([
@@ -67,28 +76,28 @@ const learningGoals = ref([
 const skills = ref([
   {
     title: '前端开发',
-    icon: 'Cpu',
+    icon: Cpu,
     description: '精通现代前端框架和工具链',
     level: '高级',
     color: '#3498db'
   },
   {
     title: '后端开发',
-    icon: 'Cpu',
+    icon: Cpu,
     description: '熟悉 Node.js 生态和数据库设计',
     level: '中级',
     color: '#2ecc71'
   },
   {
     title: '系统架构',
-    icon: 'TrendCharts',
+    icon: TrendCharts,
     description: '具备大型项目架构设计能力',
     level: '中级',
     color: '#9b59b6'
   },
   {
     title: '技术写作',
-    icon: 'Document',
+    icon: Document,
     description: '擅长技术文档和博客写作',
     level: '高级',
     color: '#e67e22'
@@ -127,6 +136,20 @@ const getHeatmapColor = (count: number) => {
   if (count === 3) return '#239a3b';
   return '#196127';
 };
+function typeToText(type: string|null){
+  if (type === 'success'){
+    return '熟练';
+  }
+  if (type === 'warning'){
+    return '入门';
+  }
+  if (type === 'info'){
+    return '掌握';
+  }
+  if (type === 'danger'){
+    return '理解';
+  }
+}
 
 // 按周分组热力图数据
 const heatmapWeeks = computed(() => {
@@ -184,6 +207,7 @@ const calculateMaxStreak = () => {
   
   return maxStreak;
 };
+
 </script>
 
 <template>
@@ -221,64 +245,67 @@ const calculateMaxStreak = () => {
         </div>
       </section>
 
-      <!-- 技术栈 -->
-      <section :class="$style.section">
-        <h2 :class="$style.sectionTitle">技术栈</h2>
-        
-        <div :class="$style.techCategory">
-          <h3 :class="$style.categoryTitle">前端技术</h3>
-          <div :class="$style.techList">
-            <div v-for="tech in techStack.frontend" :key="tech.name" :class="$style.techItem">
-              <div :class="$style.techHeader">
-                <span :class="$style.techName">{{ tech.name }}</span>
-                <span :class="$style.techLevel">{{ tech.level }}%</span>
-              </div>
-              <div :class="$style.progressBar">
-                <div
-                  :class="$style.progressFill"
-                  :style="{ width: `${tech.level}%`, background: tech.color }"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div style="display: flex;flex-direction: row;justify-content: space-between;">
+        <section :class="$style.sectionHalf">
+          <h2 :class="$style.sectionTitle">技术栈</h2>
+          <div :class="$style.StackList">
+            <div v-for="part in techStack" :key="part.title" >
+              <h3 :class="$style.LTitle">{{ part.title }}</h3>
 
-        <div :class="$style.techCategory">
-          <h3 :class="$style.categoryTitle">后端技术</h3>
-          <div :class="$style.techList">
-            <div v-for="tech in techStack.backend" :key="tech.name" :class="$style.techItem">
-              <div :class="$style.techHeader">
-                <span :class="$style.techName">{{ tech.name }}</span>
-                <span :class="$style.techLevel">{{ tech.level }}%</span>
-              </div>
-              <div :class="$style.progressBar">
-                <div
-                  :class="$style.progressFill"
-                  :style="{ width: `${tech.level}%`, background: tech.color }"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
+              <!-- 关键修复：把 v-if/v-else 放在 v-for 循环内部 -->
+              <template v-for="(tech, category) in part.content" :key="category" >
+                <!-- ✅ 重点：span 永远渲染，tooltip 仅当 tech.type 存在时包裹 -->
+                <el-tooltip
+                    v-if="tech.type"
+                    :content="typeToText(tech.type)"
+                    placement="bottom"
+                    effect="light"
+                >
+        <span :class="[$style.tag, tech.type && $style[`tag--${tech.type}`]]">
+          {{ tech.name }}
+        </span>
+                </el-tooltip>
 
-        <div :class="$style.techCategory">
-          <h3 :class="$style.categoryTitle">开发工具</h3>
-          <div :class="$style.techList">
-            <div v-for="tech in techStack.tools" :key="tech.name" :class="$style.techItem">
-              <div :class="$style.techHeader">
-                <span :class="$style.techName">{{ tech.name }}</span>
-                <span :class="$style.techLevel">{{ tech.level }}%</span>
+                <!-- 没有 type 时直接显示 span -->
+                <span
+                    v-else
+                    :class="[$style.tag, tech.type && $style[`tag--${tech.type}`]]"
+                >
+        {{ tech.name }}
+      </span>
+              </template>
+            </div>
+          </div>
+
+        </section>
+
+        <section :class="$style.sectionHalf">
+          <h2 :class="$style.sectionTitle">Studying</h2>
+          <div :class="$style.goalsGrid">
+            <div
+                v-for="goal in learningGoals"
+                :key="goal.name"
+                :class="$style.goalCard"
+            >
+              <div :class="$style.goalHeader">
+                <span :class="$style.goalName">{{ goal.name }}</span>
+                <span :class="$style.goalTarget">目标: {{ goal.target }}</span>
               </div>
-              <div :class="$style.progressBar">
-                <div
-                  :class="$style.progressFill"
-                  :style="{ width: `${tech.level}%`, background: tech.color }"
-                ></div>
+              <div :class="$style.circularProgressWrapper">
+                <el-progress
+                    type="circle"
+                    :percentage="goal.progress"
+                    :width="100"
+                    :stroke-width="8"
+                    :color="goal.color"
+                    :show-text="true"
+                />
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+      </div>
 
       <!-- 当前项目 -->
       <section :class="$style.section">
@@ -318,26 +345,7 @@ const calculateMaxStreak = () => {
       </section>
 
       <!-- 学习目标 -->
-      <section :class="$style.section">
-        <h2 :class="$style.sectionTitle">学习目标</h2>
-        <div :class="$style.goalsList">
-          <div v-for="goal in learningGoals" :key="goal.name" :class="$style.goalItem">
-            <div :class="$style.goalHeader">
-              <span :class="$style.goalName">{{ goal.name }}</span>
-              <span :class="$style.goalTarget">目标: {{ goal.target }}</span>
-            </div>
-            <div :class="$style.goalProgress">
-              <div :class="$style.progressBar">
-                <div
-                  :class="$style.progressFill"
-                  :style="{ width: `${goal.progress}%`, background: goal.color }"
-                ></div>
-              </div>
-              <span :class="$style.goalPercent">{{ goal.progress }}%</span>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <!-- 文章热力图 -->
       <section :class="$style.section">
@@ -385,6 +393,127 @@ const calculateMaxStreak = () => {
 </template>
 
 <style module>
+/* 在现有样式中添加以下内容 */
+.goalsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.goalCard {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.goalCard:hover {
+  background: #fff;
+  border-color: rgba(52, 152, 219, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.circularProgressWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.goalFooter {
+  margin-top: 10px;
+}
+
+.goalProgressText {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.goalHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.goalName {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.goalTarget {
+  font-size: 12px;
+  color: #999;
+}
+
+.sectionHalf{
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  width: 47%;
+}
+/* 技术栈标签基础样式 */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  margin: 0 0.5rem 0.5rem 0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* 悬停效果 */
+.tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.LTitle{
+  margin: 4px 2px;
+  padding: 1px 2px;
+  font-size: 20px;
+}
+
+.StackList{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+/* 类型变体（背景/边框/文字色）*/
+.tag--success {
+  background-color: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+}
+
+.tag--warning {
+  background-color: #fffbeb;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+.tag--danger {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.tag--info {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
 .container {
   min-height: 100vh;
   background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
