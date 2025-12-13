@@ -152,7 +152,6 @@ const handleRegister = () => {
   <div :class="$style.btns">
     <BasicComponentsBtn1 @click="navigateTo('/')" text="首页"/>
     <BasicComponentsBtn1 @click="navigateTo('/passages')" text="文章"/>
-    <BasicComponentsBtn1 @click="navigateTo('/archive')" text="归档"/>
     <BasicComponentsBtn1 @click="navigateTo('/moments')" text="闲话"/>
     <BasicComponentsBtn1 @click="navigateTo('/guestbook')" text="留言"/>
     <BasicComponentsBtn1 @click="navigateTo('/myself')" text="关于"/>
