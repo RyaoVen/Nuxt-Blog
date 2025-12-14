@@ -1,11 +1,8 @@
 <script setup lang="ts">
+import type {friendLinkType} from "~/stores/type/index/friendLink";
+
 defineProps<{
-  avatar: string;
-  siteName: string;
-  ownerName: string;
-  description: string;
-  screenshot: string;
-  url: string;
+  friendLink:friendLinkType
 }>();
 
 const handleClick = (url: string) => {
@@ -14,16 +11,16 @@ const handleClick = (url: string) => {
 </script>
 
 <template>
-  <div :class="$style.card" @click="handleClick(url)">
+  <div :class="$style.card" @click="handleClick(friendLink.url)">
     <div :class="$style.header">
-      <el-avatar :size="50" :src="avatar" :class="$style.avatar" />
+      <el-avatar :size="50" :src="friendLink.avatar" :class="$style.avatar" />
       <div :class="$style.info">
-        <h4 :class="$style.siteName">{{ siteName }}</h4>
-        <p :class="$style.ownerName">{{ ownerName }}</p>
+        <h4 :class="$style.siteName">{{ friendLink.siteName }}</h4>
+        <p :class="$style.ownerName">{{ friendLink.ownerName }}</p>
       </div>
     </div>
-    <p :class="$style.description">{{ description }}</p>
-    <div :class="$style.screenshot" :style="{ backgroundImage: `url(${screenshot})` }"></div>
+    <p :class="$style.description">{{ friendLink.description }}</p>
+    <div :class="$style.screenshot" :style="{ backgroundImage: `url(${friendLink.screenshot})` }"></div>
   </div>
 </template>
 

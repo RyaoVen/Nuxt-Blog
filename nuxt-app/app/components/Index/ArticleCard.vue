@@ -1,14 +1,10 @@
 <script setup lang="ts">
+
 import {ref} from "vue";
+import type {articleType} from "~/stores/type/index/article";
 
 const props = defineProps<{
-  title: string;
-  author: string;
-  date: string;
-  category: string;
-  tags: string[];
-  summary: string;
-  coverImage: string;
+  article:articleType
 }>();
 type TagType = 'success' | 'warning' | 'info' | 'danger' | 'primary';
 interface TagItem {
@@ -18,39 +14,39 @@ interface TagItem {
 const hoveredTag = ref<string | null>(null);
 
 const tagList = ref<TagItem[]>(
-    props.tags.map(tag => reactive({ tagName: tag, type: 'info' as const }))
+    props.article.tags.map(tag => reactive({ tagName: tag, type: 'info' as const }))
 );
 
 
 </script>
 
 <template>
-  <div :class="$style.articleCard">
+  <div :class="$style.articleCard" @click="navigateTo(`/passages/${article.id}`)">
     <div :class="$style.top">
       <div :class="$style.topLeft">
         <div>
-          {{date}}
+          {{article.date}}
         </div>
         <span :class="$style.sp">
           |
         </span>
         <div>
-          {{category}}
+          {{article.category}}
         </div>
       </div>
       <div :class="$style.topRight">
         <div>
-          {{author}}
+          {{article.author}}
         </div>
       </div>
     </div>
 
 
     <div :class="$style.title">
-      {{title}}
+      {{article.title}}
     </div>
     <div :class="$style.summary">
-      {{summary}}
+      {{article.summary}}
     </div>
     <el-tag
         :class="$style.tag"

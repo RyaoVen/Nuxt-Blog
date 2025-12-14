@@ -1,10 +1,18 @@
+<script setup lang="ts">
+import type {hotPassageType} from "~/stores/type/index/hotPassage";
+
+const props = defineProps<{
+  hotPassage: hotPassageType
+}>();
+</script>
+
 <template>
-  <div :class="$style.passageCard">
-    <img src="/Avatar.jpg" :class="$style.bgImage" />
+  <div :class="$style.passageCard" @click="navigateTo(`/passages/${hotPassage.id}`)">
+    <img :src="hotPassage.imgSrc" :class="$style.bgImage" />
     <div :class="$style.overlay"></div>
     <div :class="$style.content">
-      <div :class="$style.title">测试标题</div>
-      <div :class="$style.summary">这里面是一段测试用的内容</div>
+      <div :class="$style.title">{{hotPassage.title}}</div>
+      <div :class="$style.summary">{{hotPassage.summary}}</div>
     </div>
   </div>
 </template>
@@ -94,5 +102,3 @@
 }
 </style>
 
-<script setup lang="ts">
-</script>

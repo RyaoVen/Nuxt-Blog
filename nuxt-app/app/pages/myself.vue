@@ -152,6 +152,10 @@ const MyselfHeaderJson = ref<MyselfHeaderData>({
 
     <div :class="$style.content">
 
+      <!-- 文章热力图 -->
+      <MyselfHeatmap
+      />
+
       <!-- 个人能力卡片 -->
       <MyselfCore
       :skills="skills"
@@ -175,9 +179,7 @@ const MyselfHeaderJson = ref<MyselfHeaderData>({
           :currentProjects="currentProjects"
       />
 
-      <!-- 文章热力图 -->
-      <MyselfHeatmap
-      />
+
 
     </div>
   </div>
