@@ -1,7 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  css: ['@/assets/css/reset.css'],
+  css: [
+    '@/assets/css/reset.css',
+    'element-plus/theme-chalk/dark/css-vars.css',
+  ],
+  app: {
+    pageTransition: {
+      name: 'route-fade-up',
+      mode: 'default'
+    }
+  },
   modules: [
       '@pinia/nuxt',
       '@element-plus/nuxt',

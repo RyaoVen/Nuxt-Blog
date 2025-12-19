@@ -16,7 +16,7 @@ const props = defineProps<{
           :key="skill.title"
           :class="$style.skillCard"
       >
-        <div :class="$style.skillIcon" :style="{ background: `${skill.color}15` }">
+        <div :class="$style.skillIcon" :style="{ background: `color-mix(in srgb, ${skill.color}, transparent 85%)` }">
           <el-icon :size="32" :color="skill.color"><component :is="skill.icon" /></el-icon>
         </div>
         <h3 :class="$style.skillTitle">{{ skill.title }}</h3>
@@ -29,19 +29,20 @@ const props = defineProps<{
 
 <style module>
 .section {
-  background: #fff;
+  background: var(--el-bg-color-overlay);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
+  transition: all 0.3s ease;
 }
 .sectionTitle {
   font-size: 28px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0 0 32px 0;
   padding-bottom: 16px;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid var(--el-border-color-lighter);
 }/* 能力卡片 */
 .skillsGrid {
   display: grid;
@@ -50,7 +51,7 @@ const props = defineProps<{
 }
 .skillCard {
   padding: 28px;
-  background: #f8f9fa;
+  background: var(--el-fill-color-light);
   border-radius: 16px;
   text-align: center;
   transition: all 0.3s ease;
@@ -58,10 +59,10 @@ const props = defineProps<{
 }
 
 .skillCard:hover {
-  background: #fff;
-  border-color: rgba(52, 152, 219, 0.2);
+  background: var(--el-bg-color-overlay);
+  border-color: var(--el-color-primary-light-8);
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--el-box-shadow);
 }
 .skillIcon {
   width: 72px;
@@ -75,13 +76,13 @@ const props = defineProps<{
 .skillTitle {
   font-size: 18px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0 0 8px 0;
 }
 
 .skillDesc {
   font-size: 14px;
-  color: #666;
+  color: var(--el-text-color-regular);
   line-height: 1.6;
   margin: 0 0 12px 0;
 }
@@ -90,7 +91,7 @@ const props = defineProps<{
   font-size: 13px;
   font-weight: 600;
   padding: 4px 12px;
-  background: rgba(52, 152, 219, 0.1);
+  background: var(--el-color-primary-light-9);
   border-radius: 12px;
   display: inline-block;
 }

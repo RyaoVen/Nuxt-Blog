@@ -49,7 +49,7 @@ const currentProjects = ref<project[]>([
     status: '进行中',
     progress: 75,
     tech: ['Nuxt 3', 'Vue 3', 'TypeScript', 'Element Plus'],
-    color: '#3498db'
+    color: 'var(--el-color-primary)'
   },
   {
     name: '微前端架构实践',
@@ -57,7 +57,7 @@ const currentProjects = ref<project[]>([
     status: '规划中',
     progress: 30,
     tech: ['qiankun', 'Vue', 'React', 'Webpack'],
-    color: '#9b59b6'
+    color: 'var(--el-color-primary-light-3)'
   },
   {
     name: '全栈电商平台',
@@ -65,16 +65,16 @@ const currentProjects = ref<project[]>([
     status: '进行中',
     progress: 60,
     tech: ['Vue 3', 'Node.js', 'MongoDB', 'Redis'],
-    color: '#2ecc71'
+    color: 'var(--el-color-success)'
   }
 ]);
 
 // 学习目标
 const learningGoals = ref<LearningGoal[]>([
-  { name: 'Web3 开发', progress: 45, target: '2024年12月', color: '#e74c3c' },
-  { name: 'Rust 编程', progress: 30, target: '2025年3月', color: '#f39c12' },
-  { name: '系统设计', progress: 65, target: '2024年11月', color: '#3498db' },
-  { name: 'AI/ML 基础', progress: 20, target: '2025年6月', color: '#9b59b6' }
+  { name: 'Web3 开发', progress: 45, target: '2024年12月', color: 'var(--el-color-danger)' },
+  { name: 'Rust 编程', progress: 30, target: '2025年3月', color: 'var(--el-color-warning)' },
+  { name: '系统设计', progress: 65, target: '2024年11月', color: 'var(--el-color-primary)' },
+  { name: 'AI/ML 基础', progress: 20, target: '2025年6月', color: 'var(--el-color-primary-light-3)' }
 ]);
 
 
@@ -85,28 +85,28 @@ const skills = ref<skill[]>([
     icon: Cpu,
     description: '精通现代前端框架和工具链',
     level: '高级',
-    color: '#3498db'
+    color: 'var(--el-color-primary)'
   },
   {
     title: '后端开发',
     icon: Cpu,
     description: '熟悉 Node.js 生态和数据库设计',
     level: '中级',
-    color: '#2ecc71'
+    color: 'var(--el-color-success)'
   },
   {
     title: '系统架构',
     icon: TrendCharts,
     description: '具备大型项目架构设计能力',
     level: '中级',
-    color: '#9b59b6'
+    color: 'var(--el-color-primary-light-3)'
   },
   {
     title: '技术写作',
     icon: Document,
     description: '擅长技术文档和博客写作',
     level: '高级',
-    color: '#e67e22'
+    color: 'var(--el-color-warning)'
   }
 ]);
 
@@ -189,8 +189,9 @@ const MyselfHeaderJson = ref<MyselfHeaderData>({
 
 .container {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+  background: linear-gradient(to bottom, var(--el-bg-color) 0%, var(--el-bg-color-page) 100%);
   padding: 80px 20px 60px;
+  transition: background 0.3s ease;
 }
 
 /* 内容区 */

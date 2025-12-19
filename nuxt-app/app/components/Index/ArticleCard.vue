@@ -86,7 +86,7 @@ const tagList = ref<TagItem[]>(
   border: 1px solid transparent; /* 更干净的初始状态 */
   border-radius: 8px; /* 增加圆角，更现代 */
   padding: 16px;
-  background-color: #fff; /* 显式背景，避免透明问题 */
+  background-color: var(--el-bg-color-overlay); /* 显式背景，避免透明问题 */
   transition: all 0.3s ease;
   margin: 0;
   box-sizing: border-box;
@@ -94,8 +94,8 @@ const tagList = ref<TagItem[]>(
 }
 
 .articleCard:hover {
-  border-color: #dcdfe6; /* 使用 Element Plus 默认边框色 */
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08); /* 稍微柔和但有层次的阴影 */
+  border-color: var(--el-border-color); /* 使用 Element Plus 默认边框色 */
+  box-shadow: var(--el-box-shadow-light); /* 稍微柔和但有层次的阴影 */
   cursor: pointer;
   max-height: 300px;
 }
@@ -104,7 +104,7 @@ const tagList = ref<TagItem[]>(
   display: flex;
   justify-content: space-between;
   font-size: 0.9em;
-  color: #909399; /* 次要文字色，更柔和 */
+  color: var(--el-text-color-secondary); /* 次要文字色，更柔和 */
   margin-bottom: 8px;
 }
 
@@ -117,7 +117,7 @@ const tagList = ref<TagItem[]>(
 
 .sp {
   margin: 0 6px;
-  color: #c0c4cc; /* 分隔符更淡 */
+  color: var(--el-text-color-placeholder); /* 分隔符更淡 */
 }
 
 .title {
@@ -125,12 +125,12 @@ const tagList = ref<TagItem[]>(
   font-weight: 600; /* 使用 semi-bold 更优雅 */
   margin: 6px 0;
   line-height: 1.4;
-  color: #303133; /* 默认标题色 */
+  color: var(--el-text-color-primary); /* 默认标题色 */
   transition: color 0.3s ease;
 }
 
 .articleCard:hover .title {
-  color: #409eff;
+  color: var(--el-color-primary);
 }
 
 .summary {
@@ -140,7 +140,7 @@ const tagList = ref<TagItem[]>(
   overflow: hidden;
   font-size: 0.95em;
   line-height: 1.5;
-  color: #606266;
+  color: var(--el-text-color-regular);
   margin: 0 8px;
 }
 </style>

@@ -33,20 +33,20 @@ const navigateTo = (path: string) => {
 
 .avatar {
   margin-bottom: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  border: 4px solid #fff;
+  box-shadow: var(--el-box-shadow);
+  border: 4px solid var(--el-bg-color-overlay);
 }
 .pageTitle {
   font-size: 48px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0 0 12px 0;
   letter-spacing: -1px;
 }
 
 .pageDesc {
   font-size: 18px;
-  color: #666;
+  color: var(--el-text-color-regular);
   margin: 0 0 24px 0;
 }
 

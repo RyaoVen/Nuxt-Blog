@@ -1,11 +1,11 @@
-<script lang="ts" setup>
-import {ref, computed} from 'vue';
-import {Picture, VideoCamera, Link, Star, ChatDotRound, Share} from '@element-plus/icons-vue';
-import {ElMessage} from 'element-plus';
-// 动态数据
-import MomentsStore from '~/stores/moments'
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { ElMessage } from 'element-plus';
+import MomentsStore from '~/stores/moments';
+import type { Moment } from '~/stores/type/moments';
+
 // 动态/瞬间 模拟数据
-const moments = ref([
+const moments = ref<Moment[]>([
   {
     id: 1,
     author: {
@@ -299,96 +299,50 @@ const moments = ref([
     ],
     type: "text"
   }
-])
-const momentsStore = MomentsStore();
+]);
 
+const momentsStore = MomentsStore();
 
 // 统计数据
 const totalMoments = computed(() => moments.value.length);
 const totalLikes = computed(() => moments.value.reduce((sum, m) => sum + m.likes, 0));
 const totalComments = computed(() => moments.value.reduce((sum, m) => sum + m.comments.length, 0));
 
-// 新动态内容
-const newMoment = ref('');
-
-// 发布动态
-
 // 点赞动态
-const likeMoment = (moment: any) => {
+const likeMoment = (moment: Moment) => {
   moment.likes++;
 };
 
-// 格式化时间
-const formatDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-
-  if (minutes < 1) return '刚刚';
-  if (minutes < 60) return `${minutes}分钟前`;
-  if (hours < 24) return `${hours}小时前`;
-  if (days < 7) return `${days}天前`;
-
-  return dateStr;
-};
-
-function showCommentBox(id: number) {
-  if (momentsStore.commentTo != id) {
-    momentsStore.commentTo = id;
-  } else {
-    momentsStore.commentTo = null;
+const submitComment = (momentId: number, content: string) => {
+  const moment = moments.value.find(m => m.id === momentId);
+  if (moment) {
+    moment.comments.unshift({
+      id: Date.now(),
+      author: {
+        name: "我",
+        avatar: "/Avatar.jpg"
+      },
+      content: content,
+      images: [],
+      date: "刚刚",
+      likes: 0
+    });
+    ElMessage.success('评论发表成功');
   }
-}
-
+};
 </script>
 
 <template>
-  <div :class="$style.container">
+  <div :class="$style.body">
     <div :class="$style.layout">
       <!-- 左侧个人信息卡片 -->
       <aside :class="$style.sidebar">
-        <div :class="$style.profileCard">
-          <el-avatar :class="$style.avatar" :size="100" src="/Avatar.jpg"/>
-          <h3 :class="$style.profileName">RyaoVen</h3>
-          <p :class="$style.profileBio">全栈开发者 · 技术分享者</p>
-
-          <div :class="$style.profileStats">
-            <div :class="$style.statItem">
-              <span :class="$style.statValue">{{ totalMoments }}</span>
-              <span :class="$style.statLabel">动态</span>
-            </div>
-            <div :class="$style.statItem">
-              <span :class="$style.statValue">{{ totalLikes }}</span>
-              <span :class="$style.statLabel">获赞</span>
-            </div>
-            <div :class="$style.statItem">
-              <span :class="$style.statValue">{{ totalComments }}</span>
-              <span :class="$style.statLabel">评论</span>
-            </div>
-          </div>
-        </div>
-
-        <div :class="$style.infoCard">
-          <h4 :class="$style.infoTitle">关于我</h4>
-          <div :class="$style.infoList">
-            <div :class="$style.infoItem">
-              <span :class="$style.infoLabel">职业</span>
-              <span :class="$style.infoValue">全栈工程师</span>
-            </div>
-            <div :class="$style.infoItem">
-              <span :class="$style.infoLabel">技能</span>
-              <span :class="$style.infoValue">Vue / React / Node.js</span>
-            </div>
-            <div :class="$style.infoItem">
-              <span :class="$style.infoLabel">爱好</span>
-              <span :class="$style.infoValue">编程 / 摄影 / 音乐</span>
-            </div>
-          </div>
-        </div>
+        <MomentsProfileCard
+          :totalMoments="totalMoments"
+          :totalLikes="totalLikes"
+          :totalComments="totalComments"
+        />
+        <MomentsInfoCard />
       </aside>
 
       <!-- 主内容区 -->
@@ -399,150 +353,23 @@ function showCommentBox(id: number) {
           <p :class="$style.pageDesc">记录生活点滴，分享技术心得</p>
         </div>
 
-
         <!-- 动态列表 -->
-        <div :class="$style.momentsList">
-          <div
-              v-for="moment in moments"
-              :key="moment.id"
-              :class="$style.momentCard"
-          >
-            <el-avatar :class="$style.momentAvatar" :size="48" :src="moment.author.avatar"/>
-
-            <div :class="$style.momentContent">
-              <div :class="$style.momentHeader">
-                <span :class="$style.momentAuthor">{{ moment.author.name }}</span>
-                <span :class="$style.momentDate">{{ formatDate(moment.date) }}</span>
-              </div>
-
-              <p :class="$style.momentText">{{ moment.content }}</p>
-
-              <!-- 链接卡片 -->
-              <div v-if="moment.link" :class="$style.linkCard">
-                <div :class="$style.linkIcon">
-                  <el-icon :size="24">
-                    <Link/>
-                  </el-icon>
-                </div>
-                <div :class="$style.linkInfo">
-                  <span :class="$style.linkTitle">{{ moment.link.title }}</span>
-                  <span :class="$style.linkUrl">{{ moment.link.url }}</span>
-                </div>
-              </div>
-
-              <!-- 动态操作 -->
-              <div :class="$style.momentActions">
-                <button :class="$style.actionBtn" @click="likeMoment(moment)">
-                  <el-icon>
-                    <Star/>
-                  </el-icon>
-                  <span>{{ moment.likes }}</span>
-                </button>
-                <button :class="$style.actionBtn" @click="showCommentBox(moment.id)">
-                  <el-icon>
-                    <ChatDotRound/>
-                  </el-icon>
-                  <span>{{ moment.comments.length }}</span>
-                </button>
-                <button :class="$style.actionBtn">
-                  <el-icon>
-                    <Share/>
-                  </el-icon>
-                  <span>分享</span>
-                </button>
-              </div>
-              <div v-if="momentsStore.commentTo === moment.id">
-                <div :class="$style.commentForm">
-                  <el-avatar :size="40" src="/Avatar.jpg" />
-                  <div :class="$style.formContent">
-                    <el-input
-                        v-model="newComment"
-                        type="textarea"
-                        :rows="4"
-                        placeholder="写下你的评论..."
-                        :class="$style.commentInput"
-                    />
-                    <div :class="$style.formActions">
-                      <el-button plain @click="submitComment" >发表评论</el-button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                    v-for="cmt in moment.comments"
-                    :key="cmt.id"
-                    style="display: flex; flex-direction: row;gap: 10px;width: 100%;margin-top: 10px;"
-                >
-                  <el-avatar
-                      :size="32"
-                      :src="cmt.author.avatar"
-                  />
-                  <div style="display:flex;flex-direction: column;width: 100%;">
-
-
-                    <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 8px;">
-                      <span :class="$style.momentAuthor">{{ cmt.author.name }}</span>
-                      <span :class="$style.momentDate">{{ cmt.date }}</span>
-                    </div>
-                    <p :class="$style.momentText">{{ cmt.content }}</p>
-
-                  </div>
-
-                </div>
-                <div v-if="moment.comments.length > 10" style="margin-top: 10px;">
-                  <el-pagination
-                      :page-size="10"
-                      :total="50"
-                      background
-                      layout="prev, pager, next"
-                  />
-                </div>
-
-
-              </div>
-            </div>
-
-          </div>
-        </div>
+        <MomentsList
+          :moments="moments"
+          @like="likeMoment"
+          @submitComment="submitComment"
+        />
       </main>
     </div>
   </div>
 </template>
 
 <style module>
-.formActions {
-  display: flex;
-  justify-content: flex-end;
-
-}
-.commentInput :global(.el-textarea__inner) {
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-  padding: 12px 16px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.commentInput :global(.el-textarea__inner):focus {
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-}
-.commentForm {
-  margin-top: 20px;
-  display: flex;
-  gap: 16px;
-  margin-bottom: 40px;
-
-}
-.formContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.container {
+.body {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+  background: linear-gradient(to bottom, var(--el-bg-color) 0%, var(--el-bg-color-page) 100%);
   padding: 80px 20px 60px;
+  transition: background 0.3s ease;
 }
 
 .layout {
@@ -563,99 +390,6 @@ function showCommentBox(id: number) {
   height: fit-content;
 }
 
-.profileCard {
-  background: #fff;
-  border-radius: 20px;
-  padding: 32px;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.avatar {
-  margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.profileName {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 8px 0;
-}
-
-.profileBio {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 24px 0;
-}
-
-.profileStats {
-  display: flex;
-  justify-content: space-around;
-  padding-top: 20px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.statItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.statValue {
-  font-size: 24px;
-  font-weight: 700;
-  color: #3498db;
-}
-
-.statLabel {
-  font-size: 13px;
-  color: #999;
-}
-
-.infoCard {
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.infoTitle {
-  font-size: 16px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 16px 0;
-}
-
-.infoList {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.infoItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background: #f8f9fa;
-  border-radius: 8px;
-}
-
-.infoLabel {
-  font-size: 13px;
-  color: #999;
-}
-
-.infoValue {
-  font-size: 13px;
-  color: #333;
-  font-weight: 500;
-}
-
 /* 主内容区 */
 .mainContent {
   min-width: 0;
@@ -668,201 +402,29 @@ function showCommentBox(id: number) {
 .pageTitle {
   font-size: 36px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0 0 8px 0;
   letter-spacing: -0.5px;
 }
 
 .pageDesc {
   font-size: 16px;
-  color: #666;
+  color: var(--el-text-color-regular);
   margin: 0;
 }
 
-/* 发布框 */
-.publishBox {
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 24px;
-  display: flex;
-  gap: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.publishContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.publishInput :global(.el-textarea__inner) {
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-  padding: 12px 16px;
-  font-size: 15px;
-  transition: all 0.3s ease;
-}
-
-.publishInput :global(.el-textarea__inner):focus {
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-}
-
-.publishActions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.publishTools {
-  display: flex;
-  gap: 8px;
-}
-
-/* 动态列表 */
-.momentsList {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.momentCard {
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  display: flex;
-  gap: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
-}
-
-.momentCard:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.momentAvatar {
-  flex-shrink: 0;
-}
-
-.momentContent {
-  flex: 1;
-  min-width: 0;
-}
-
-.momentHeader {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.momentAuthor {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-.momentDate {
-  font-size: 13px;
-  color: #999;
-}
-
-.momentText {
-  font-size: 15px;
-  color: #333;
-  line-height: 1.7;
-  margin: 0 0 16px 0;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.linkCard {
-  display: flex;
-  gap: 12px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-}
-
-.linkCard:hover {
-  background: #fff;
-  border-color: rgba(52, 152, 219, 0.2);
-}
-
-.linkIcon {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(52, 152, 219, 0.1);
-  border-radius: 10px;
-  color: #3498db;
-  flex-shrink: 0;
-}
-
-.linkInfo {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  justify-content: center;
-  min-width: 0;
-}
-
-.linkTitle {
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.linkUrl {
-  font-size: 13px;
-  color: #999;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.momentActions {
-  display: flex;
-  gap: 24px;
-  padding-top: 12px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.actionBtn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #666;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.actionBtn:hover {
-  background: #f8f9fa;
-  color: #3498db;
-}
-
-/* 响应式 */
 @media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 240px 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .body {
+    padding: 60px 16px 40px;
+  }
+
   .layout {
     grid-template-columns: 1fr;
   }
@@ -870,23 +432,9 @@ function showCommentBox(id: number) {
   .sidebar {
     position: static;
   }
-}
 
-@media (max-width: 768px) {
-  .container {
-    padding: 60px 16px 40px;
-  }
-
-  .publishBox {
-    flex-direction: column;
-  }
-
-  .momentCard {
-    padding: 16px;
-  }
-
-  .momentActions {
-    flex-wrap: wrap;
+  .pageTitle {
+    font-size: 28px;
   }
 }
 </style>

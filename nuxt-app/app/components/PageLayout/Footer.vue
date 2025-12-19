@@ -53,10 +53,11 @@ const currentYear = new Date().getFullYear();
 
 <style module>
 .footer {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  color: #fff;
+  background: var(--el-bg-color-overlay);
+  color: var(--el-text-color-primary);
   margin-top: 80px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--el-border-color-light);
+  transition: all 0.3s ease;
 }
 
 .container {
@@ -83,7 +84,7 @@ const currentYear = new Date().getFullYear();
   font-size: 28px;
   font-weight: 700;
   margin: 0 0 8px 0;
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--el-text-color-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -91,7 +92,7 @@ const currentYear = new Date().getFullYear();
 
 .brandDesc {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--el-text-color-regular);
   margin: 0 0 20px 0;
   line-height: 1.6;
 }
@@ -107,16 +108,16 @@ const currentYear = new Date().getFullYear();
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--el-fill-color-light);
   border-radius: 8px;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--el-border-color);
 }
 
 .socialLink:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--el-fill-color);
   transform: translateY(-2px);
-  border-color: rgba(52, 152, 219, 0.5);
+  border-color: var(--el-color-primary);
 }
 
 .socialLink img {
@@ -124,10 +125,13 @@ const currentYear = new Date().getFullYear();
   height: 18px;
   object-fit: contain;
   opacity: 0.8;
+  filter: grayscale(100%);
+  transition: all 0.3s ease;
 }
 
 .socialLink:hover img {
   opacity: 1;
+  filter: none;
 }
 
 /* 链接组 */
@@ -148,14 +152,14 @@ const currentYear = new Date().getFullYear();
   font-size: 14px;
   font-weight: 600;
   margin: 0 0 8px 0;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--el-text-color-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .link {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--el-text-color-regular);
   text-decoration: none;
   transition: all 0.3s ease;
   position: relative;
@@ -163,14 +167,14 @@ const currentYear = new Date().getFullYear();
 }
 
 .link:hover {
-  color: #3498db;
+  color: var(--el-color-primary);
   padding-left: 4px;
 }
 
 /* 底部版权 */
 .bottom {
   padding-top: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--el-border-color-lighter);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -181,7 +185,7 @@ const currentYear = new Date().getFullYear();
 .copyright,
 .tech {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--el-text-color-secondary);
   margin: 0;
 }
 

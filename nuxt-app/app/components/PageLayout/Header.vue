@@ -1,16 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import {
   Moon,
   Sunny,
   Search,
   User,
-  Close
+  Close,
+  Lock,
+  Message,
+  Hide,
+  View
 } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
+
 //TODO 工程化
 //TODO 完成逻辑层编写
 const themeState = ref<'Sunny' | 'Moon'>('Sunny');
+
+onMounted(() => {
+  const saved = typeof window !== 'undefined' ? localStorage.getItem('theme') : null;
+  const isDark = saved === 'dark';
+  document.documentElement.classList.toggle('dark', !!isDark);
+  themeState.value = isDark ? 'Moon' : 'Sunny';
+});
 
 // 搜索相关
 const searchDialogVisible = ref(false);
@@ -44,12 +56,18 @@ const mockArticles = [
 
 // 切换主题按钮图标
 function changeTheme() {
-  themeState.value = (themeState.value === 'Sunny' ? 'Moon' : 'Sunny');
+  const isDark = document.documentElement.classList.toggle('dark');
+  themeState.value = isDark ? 'Moon' : 'Sunny';
+  try {
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  } catch {}
 }
 
 // 导航功能
-const navigateTo = (path: string) => {
-  window.location.href = path;
+const go = (path: string) => {
+  // use Nuxt navigateTo to avoid full reload and preserve state
+  // @ts-ignore
+  navigateTo(path);
 };
 
 // 打开搜索弹窗
@@ -60,6 +78,7 @@ const openSearchDialog = () => {
 };
 
 // 执行搜索
+let searchTimer: number | undefined;
 const performSearch = () => {
   if (!searchQuery.value.trim()) {
     searchResults.value = [];
@@ -77,6 +96,15 @@ const performSearch = () => {
   }, 300);
 };
 
+const onSearchInput = () => {
+  if (searchTimer) {
+    clearTimeout(searchTimer);
+  }
+  searchTimer = window.setTimeout(() => {
+    performSearch();
+  }, 300);
+};
+
 // 跳转到文章
 const goToArticle = (id: number) => {
   searchDialogVisible.value = false;
@@ -85,9 +113,8 @@ const goToArticle = (id: number) => {
 
 // 打开登录弹窗
 const openLoginDialog = () => {
-  loginDialogVisible.value = true;
-  isLogin.value = true;
-  resetForms();
+  // @ts-ignore
+  navigateTo('/login');
 };
 
 // 重置表单
@@ -146,16 +173,16 @@ const handleRegister = () => {
 
 <template>
 <div :class="$style.containerTop">
-  <div :class="$style.logo" @click="navigateTo('/')">
+  <div :class="$style.logo" @click="go('/')">
     <span>RyaoVen</span>
   </div>
   
   <div :class="$style.btns">
-    <BasicComponentsBtn1 @click="navigateTo('/')" text="首页"/>
-    <BasicComponentsBtn1 @click="navigateTo('/passages')" text="文章"/>
-    <BasicComponentsBtn1 @click="navigateTo('/moments')" text="闲话"/>
-    <BasicComponentsBtn1 @click="navigateTo('/guestbook')" text="留言"/>
-    <BasicComponentsBtn1 @click="navigateTo('/myself')" text="关于"/>
+    <BasicComponentsBtn1 @click="go('/')" text="首页"/>
+    <BasicComponentsBtn1 @click="go('/passages')" text="文章"/>
+    <BasicComponentsBtn1 @click="go('/moments')" text="闲话"/>
+    <BasicComponentsBtn1 @click="go('/guestbook')" text="留言"/>
+    <BasicComponentsBtn1 @click="go('/myself')" text="关于"/>
   </div>
   
   <div :class="$style.btns1">
@@ -172,6 +199,7 @@ const handleRegister = () => {
   width="600px"
   :show-close="false"
   top="10vh"
+  :z-index="3000"
 >
   <template #header>
     <div :class="$style.dialogHeader">
@@ -186,7 +214,7 @@ const handleRegister = () => {
       placeholder="输入关键词搜索..."
       size="large"
       :prefix-icon="Search"
-      @input="performSearch"
+      @input="onSearchInput"
       clearable
       :class="$style.searchInput"
     />
@@ -222,6 +250,7 @@ const handleRegister = () => {
   width="420px"
   :show-close="false"
   top="15vh"
+  :z-index="3000"
 >
   <template #header>
     <div :class="$style.dialogHeader">
@@ -317,16 +346,22 @@ const handleRegister = () => {
 .containerTop{
   width: 100%;
   position: fixed;
-  background: rgba(255, 255, 255, 0.95);
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   height: 64px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--el-border-color-light);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 2000;
+}
+
+:global(.dark) .containerTop {
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .btns{
@@ -349,10 +384,11 @@ const handleRegister = () => {
   transition: all 0.3s ease;
   border: none;
   background: transparent;
+  color: var(--el-text-color-primary);
 }
 
 .btns1 :global(.el-button:hover) {
-  background: rgba(52, 152, 219, 0.1);
+  background: var(--el-fill-color-light);
   transform: scale(1.05);
 }
 
@@ -369,7 +405,7 @@ const handleRegister = () => {
 .logo span {
   font-size: 20px;
   font-weight: 700;
-  background: rgba(0, 0, 0, 0.75);
+  background: var(--el-text-color-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -385,6 +421,16 @@ const handleRegister = () => {
 .loginDialog :global(.el-dialog) {
   border-radius: 20px;
   padding: 0;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+  box-shadow: var(--el-box-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+:global(.dark) .searchDialog :global(.el-dialog),
+:global(.dark) .loginDialog :global(.el-dialog) {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .searchDialog :global(.el-dialog__header),
@@ -408,7 +454,7 @@ const handleRegister = () => {
 .dialogTitle {
   font-size: 24px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0;
 }
 
@@ -422,15 +468,17 @@ const handleRegister = () => {
 .searchInput :global(.el-input__wrapper) {
   border-radius: 12px;
   padding: 12px 16px;
-  box-shadow: 0 0 0 1px #e0e0e0 inset;
+  box-shadow: 0 0 0 1px var(--el-border-color) inset;
+  background-color: var(--el-fill-color-blank);
+  transition: all 0.3s;
 }
 
 .searchInput :global(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #3498db inset;
+  box-shadow: 0 0 0 1px var(--el-color-primary) inset;
 }
 
 .searchInput :global(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 2px #3498db inset;
+  box-shadow: 0 0 0 2px var(--el-color-primary) inset;
 }
 
 .searchResults {
@@ -449,7 +497,7 @@ const handleRegister = () => {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background: #f8f9fa;
+  background: var(--el-fill-color-light);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -457,30 +505,31 @@ const handleRegister = () => {
 }
 
 .resultItem:hover {
-  background: #fff;
-  border-color: rgba(52, 152, 219, 0.2);
+  background: var(--el-bg-color);
+  border-color: var(--el-color-primary-light-5);
   transform: translateX(4px);
+  box-shadow: var(--el-box-shadow-light);
 }
 
 .resultTitle {
   font-size: 15px;
   font-weight: 500;
-  color: #333;
+  color: var(--el-text-color-primary);
   flex: 1;
 }
 
 .resultCategory {
   font-size: 13px;
-  color: #3498db;
+  color: var(--el-color-primary);
   padding: 4px 12px;
-  background: rgba(52, 152, 219, 0.1);
+  background: var(--el-color-primary-light-9);
   border-radius: 12px;
 }
 
 .noResults {
   text-align: center;
   padding: 40px;
-  color: #999;
+  color: var(--el-text-color-secondary);
 }
 
 .searching {
@@ -489,7 +538,7 @@ const handleRegister = () => {
   align-items: center;
   gap: 12px;
   padding: 40px;
-  color: #999;
+  color: var(--el-text-color-secondary);
 }
 
 .loadingIcon {
@@ -523,15 +572,16 @@ const handleRegister = () => {
 .formInput :global(.el-input__wrapper) {
   border-radius: 12px;
   padding: 12px 16px;
-  box-shadow: 0 0 0 1px #e0e0e0 inset;
+  box-shadow: 0 0 0 1px var(--el-border-color) inset;
+  background-color: var(--el-fill-color-blank);
 }
 
 .formInput :global(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #3498db inset;
+  box-shadow: 0 0 0 1px var(--el-color-primary) inset;
 }
 
 .formInput :global(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 2px #3498db inset;
+  box-shadow: 0 0 0 2px var(--el-color-primary) inset;
 }
 
 .formOptions {
@@ -539,17 +589,18 @@ const handleRegister = () => {
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
+  color: var(--el-text-color-regular);
 }
 
 .forgotLink {
-  color: #3498db;
+  color: var(--el-color-primary);
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .forgotLink:hover {
-  color: #2980b9;
+  color: var(--el-color-primary-dark-2);
   text-decoration: underline;
 }
 
@@ -564,13 +615,13 @@ const handleRegister = () => {
 .toggleMode {
   text-align: center;
   font-size: 14px;
-  color: #666;
+  color: var(--el-text-color-secondary);
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--el-border-color-lighter);
 }
 
 .toggleLink {
-  color: #3498db;
+  color: var(--el-color-primary);
   cursor: pointer;
   margin-left: 8px;
   font-weight: 600;
@@ -579,7 +630,7 @@ const handleRegister = () => {
 }
 
 .toggleLink:hover {
-  color: #2980b9;
+  color: var(--el-color-primary-dark-2);
   text-decoration: underline;
 }
 
@@ -593,7 +644,7 @@ const handleRegister = () => {
   display: flex;
   align-items: center;
   text-align: center;
-  color: #999;
+  color: var(--el-text-color-secondary);
   font-size: 13px;
 }
 
@@ -601,7 +652,7 @@ const handleRegister = () => {
 .divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--el-border-color-lighter);
 }
 
 .divider span {

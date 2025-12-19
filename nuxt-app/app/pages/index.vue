@@ -6,12 +6,10 @@ import type {friendLinkType} from "~/stores/type/index/friendLink";
 import type {hotPassageType} from "~/stores/type/index/hotPassage";
 import type {articleType} from "~/stores/type/index/article";
 import type {hiroType, tagType,btnType} from "~/stores/type/index/hiro"
-//TODO 工程化
-//TODO 完成逻辑层编写
+
 const TextH1: string = "Hi,here is RyaoVen."
 const TextSpan: string = "I won't stop."
 import {ref} from 'vue';
-
 
 // 文章数据
 const articles = ref<articleType[]>([
@@ -162,12 +160,14 @@ const hiro: hiroType = {
     <div :class="$style.sectionHeader">
       <h2 :class="$style.sectionTitle">友链</h2>
     </div>
-    <div :class="$style.friendLinksContainer">
-      <IndexFriendLinkCard
-          v-for="(link, index) in friendLinks"
-          :key="index"
-          :friendLink="link"
-      />
+    <div :class="$style.friendLinksWrapper">
+      <div :class="$style.friendLinksContainer">
+        <IndexFriendLinkCard
+            v-for="(link, index) in friendLinks"
+            :key="index"
+            :friendLink="link"
+        />
+      </div>
     </div>
   </div>
 
@@ -177,12 +177,13 @@ const hiro: hiroType = {
 
 
 .body {
-  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+  background: linear-gradient(to bottom, var(--el-bg-color) 0%, var(--el-bg-color-page) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  transition: background 0.3s ease;
 }
 
 .sectionContainer {
@@ -207,7 +208,7 @@ const hiro: hiroType = {
 .sectionTitle {
   font-size: 32px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin-left: 4px;
   letter-spacing: -0.5px;
 }
@@ -226,6 +227,15 @@ const hiro: hiroType = {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+}
+
+.friendLinksWrapper {
+  width: 100%;
+  background: var(--el-bg-color-overlay);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
 }
 
 .friendLinksContainer {

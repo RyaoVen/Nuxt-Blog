@@ -45,11 +45,12 @@ const props = defineProps<{
 
 <style module>
 .section {
-  background: #fff;
+  background: var(--el-bg-color-overlay);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
+  transition: all 0.3s ease;
 }
 /* 项目卡片 */
 .projectsList {
@@ -60,16 +61,16 @@ const props = defineProps<{
 
 .projectCard {
   padding: 28px;
-  background: #f8f9fa;
+  background: var(--el-fill-color-light);
   border-radius: 16px;
   transition: all 0.3s ease;
   border: 1px solid transparent;
 }
 
 .projectCard:hover {
-  background: #fff;
-  border-color: rgba(52, 152, 219, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: var(--el-bg-color-overlay);
+  border-color: var(--el-color-primary-light-8);
+  box-shadow: var(--el-box-shadow);
 }
 
 .projectHeader {
@@ -82,7 +83,7 @@ const props = defineProps<{
 .projectName {
   font-size: 20px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0;
 }
 
@@ -90,13 +91,13 @@ const props = defineProps<{
   font-size: 13px;
   font-weight: 600;
   padding: 4px 12px;
-  background: rgba(52, 152, 219, 0.1);
+  background: var(--el-color-primary-light-9);
   border-radius: 12px;
 }
 
 .projectDesc {
   font-size: 15px;
-  color: #666;
+  color: var(--el-text-color-regular);
   line-height: 1.6;
   margin: 0 0 16px 0;
 }
@@ -109,10 +110,10 @@ const props = defineProps<{
 }
 .techTag {
   font-size: 12px;
-  color: #666;
+  color: var(--el-text-color-regular);
   padding: 4px 12px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background: var(--el-fill-color-blank);
+  border: 1px solid var(--el-border-color);
   border-radius: 12px;
 }
 
@@ -130,17 +131,17 @@ const props = defineProps<{
 
 .progressLabel {
   font-size: 13px;
-  color: #999;
+  color: var(--el-text-color-secondary);
 }
 
 .progressValue {
   font-size: 14px;
   font-weight: 600;
-  color: #333;
+  color: var(--el-text-color-primary);
 }
 .progressBar {
   height: 8px;
-  background: #f0f0f0;
+  background: var(--el-fill-color-darker);
   border-radius: 4px;
   overflow: hidden;
 }

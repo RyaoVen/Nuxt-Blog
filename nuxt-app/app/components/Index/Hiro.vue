@@ -119,24 +119,24 @@ onMounted(() => {
 .container h1 {
   font-size: 48px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   letter-spacing: -0.5px;
 }
 
 .container span {
   font-size: 18px;
-  color: #666;
+  color: var(--el-text-color-regular);
   font-weight: 400;
 }
 
 .avatar {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--el-box-shadow);
   transition: all 0.3s ease;
 }
 
 .avatar:hover {
   transform: scale(1.05);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--el-box-shadow-dark);
 }
 
 .btns {
@@ -150,14 +150,14 @@ onMounted(() => {
   height: 40px;
   padding: 0;
   border: none;
-  background: #f8f9fa;
+  background: var(--el-fill-color-light);
   transition: all 0.3s ease;
 }
 
 .btns :global(.el-button:hover) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: #fff;
+  box-shadow: var(--el-box-shadow-light);
+  background: var(--el-bg-color-overlay);
 }
 
 .btns :global(.el-button) img {
@@ -203,9 +203,9 @@ onMounted(() => {
   flex-wrap: wrap;
 }
 .tags :global(.el-tag) {
-  border: 1px solid #e0e0e0;
-  background: #fff;
-  color: #666;
+  border: 1px solid var(--el-border-color-lighter);
+  background: var(--el-bg-color-overlay);
+  color: var(--el-text-color-regular);
   font-size: 13px;
   padding: 6px 14px;
 }

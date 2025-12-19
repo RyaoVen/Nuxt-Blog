@@ -32,11 +32,11 @@ const heatmapData = ref(generateHeatmapData());
 
 // 获取热力图颜色
 const getHeatmapColor = (count: number) => {
-  if (count === 0) return '#ebedf0';
-  if (count === 1) return '#c6e48b';
-  if (count === 2) return '#7bc96f';
-  if (count === 3) return '#239a3b';
-  return '#196127';
+  if (count === 0) return 'var(--el-fill-color-darker)';
+  if (count === 1) return 'var(--el-color-primary-light-7)';
+  if (count === 2) return 'var(--el-color-primary-light-5)';
+  if (count === 3) return 'var(--el-color-primary-light-3)';
+  return 'var(--el-color-primary)';
 };
 
 
@@ -131,11 +131,11 @@ const calculateMaxStreak = () => {
       </div>
       <div :class="$style.heatmapLegend">
         <span :class="$style.legendLabel">少</span>
-        <div :class="$style.legendItem" style="background: #ebedf0;"></div>
-        <div :class="$style.legendItem" style="background: #c6e48b;"></div>
-        <div :class="$style.legendItem" style="background: #7bc96f;"></div>
-        <div :class="$style.legendItem" style="background: #239a3b;"></div>
-        <div :class="$style.legendItem" style="background: #196127;"></div>
+        <div :class="$style.legendItem" style="background: var(--el-fill-color-darker);"></div>
+        <div :class="$style.legendItem" style="background: var(--el-color-primary-light-7);"></div>
+        <div :class="$style.legendItem" style="background: var(--el-color-primary-light-5);"></div>
+        <div :class="$style.legendItem" style="background: var(--el-color-primary-light-3);"></div>
+        <div :class="$style.legendItem" style="background: var(--el-color-primary);"></div>
         <span :class="$style.legendLabel">多</span>
       </div>
     </div>
@@ -144,20 +144,21 @@ const calculateMaxStreak = () => {
 
 <style module>
 .section {
-  background: #fff;
+  background: var(--el-bg-color-overlay);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
+  transition: all 0.3s ease;
 }
 
 .sectionTitle {
   font-size: 28px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0 0 32px 0;
   padding-bottom: 16px;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid var(--el-border-color-lighter);
 }
 /* 热力图 */
 .heatmapStats {
@@ -165,8 +166,9 @@ const calculateMaxStreak = () => {
   gap: 40px;
   margin-bottom: 32px;
   padding: 24px;
-  background: #f8f9fa;
+  background: var(--el-fill-color-light);
   border-radius: 12px;
+  transition: all 0.3s ease;
 }
 
 .statItem {
@@ -179,12 +181,12 @@ const calculateMaxStreak = () => {
 .statValue {
   font-size: 32px;
   font-weight: 700;
-  color: #3498db;
+  color: var(--el-color-primary);
 }
 
 .statLabel {
   font-size: 13px;
-  color: #999;
+  color: var(--el-text-color-secondary);
 }
 
 .heatmapContainer {
@@ -216,7 +218,7 @@ const calculateMaxStreak = () => {
 
 .heatmapDay:hover {
   transform: scale(1.3);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--el-box-shadow);
 }
 
 .heatmapLegend {
@@ -228,7 +230,7 @@ const calculateMaxStreak = () => {
 
 .legendLabel {
   font-size: 12px;
-  color: #999;
+  color: var(--el-text-color-secondary);
 }
 
 .legendItem {

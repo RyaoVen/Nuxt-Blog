@@ -59,12 +59,13 @@ function typeToText(type: string|null){
 
 <style module>
 .sectionHalf{
-  background: #fff;
+  background: var(--el-bg-color-overlay);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
   width: 47%;
+  transition: all 0.3s ease;
 }
 /* 技术栈标签基础样式 */
 .tag {
@@ -74,9 +75,9 @@ function typeToText(type: string|null){
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
-  color: #333;
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
+  color: var(--el-text-color-primary);
+  background-color: var(--el-fill-color-blank);
+  border: 1px solid var(--el-border-color);
   margin: 0 0.5rem 0.5rem 0;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -85,7 +86,7 @@ function typeToText(type: string|null){
 /* 悬停效果 */
 .tag:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--el-box-shadow-light);
 }
 .LTitle{
   margin: 4px 2px;
@@ -102,26 +103,26 @@ function typeToText(type: string|null){
 
 /* 类型变体（背景/边框/文字色）*/
 .tag--success {
-  background-color: #ecfdf5;
-  border-color: #a7f3d0;
-  color: #065f46;
+  background-color: var(--el-color-success-light-9);
+  border-color: var(--el-color-success-light-5);
+  color: var(--el-color-success);
 }
 
 .tag--warning {
-  background-color: #fffbeb;
-  border-color: #fcd34d;
-  color: #92400e;
+  background-color: var(--el-color-warning-light-9);
+  border-color: var(--el-color-warning-light-5);
+  color: var(--el-color-warning);
 }
 
 .tag--danger {
-  background-color: #fef2f2;
-  border-color: #fecaca;
-  color: #b91c1c;
+  background-color: var(--el-color-danger-light-9);
+  border-color: var(--el-color-danger-light-5);
+  color: var(--el-color-danger);
 }
 
 .tag--info {
-  background-color: #eff6ff;
-  border-color: #bfdbfe;
-  color: #1d4ed8;
+  background-color: var(--el-color-info-light-9);
+  border-color: var(--el-color-info-light-5);
+  color: var(--el-color-info);
 }
 </style>

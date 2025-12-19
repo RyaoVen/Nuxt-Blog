@@ -38,10 +38,10 @@ const props = defineProps<{
 .sectionTitle {
   font-size: 28px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0 0 32px 0;
   padding-bottom: 16px;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid var(--el-border-color-lighter);
 }
 .goalsGrid {
   display: grid;
@@ -51,7 +51,7 @@ const props = defineProps<{
 
 .goalCard {
   padding: 20px;
-  background: #f8f9fa;
+  background: var(--el-fill-color-light);
   border-radius: 12px;
   text-align: center;
   transition: all 0.3s ease;
@@ -59,9 +59,9 @@ const props = defineProps<{
 }
 
 .goalCard:hover {
-  background: #fff;
-  border-color: rgba(52, 152, 219, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: var(--el-bg-color-overlay);
+  border-color: var(--el-color-primary-light-8);
+  box-shadow: var(--el-box-shadow);
 }
 
 .circularProgressWrapper {
@@ -78,20 +78,21 @@ const props = defineProps<{
 .goalName {
   font-size: 15px;
   font-weight: 600;
-  color: #333;
+  color: var(--el-text-color-primary);
 }
 
 .goalTarget {
   font-size: 12px;
-  color: #999;
+  color: var(--el-text-color-secondary);
 }
 
 .sectionHalf{
-  background: #fff;
+  background: var(--el-bg-color-overlay);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
   width: 47%;
+  transition: all 0.3s ease;
 }
 </style>

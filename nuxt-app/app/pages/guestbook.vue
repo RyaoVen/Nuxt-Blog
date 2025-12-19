@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ChatDotRound, Star, Delete } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
-//TODO 工程化
-//TODO 完成逻辑层编写
+import type { GuestbookMessage } from '~/stores/type/guestbook/message';
+
+// TODO: 工程化
+// TODO: 完成逻辑层编写
+
 // 留言数据
-const messages = ref([
+const messages = ref<GuestbookMessage[]>([
   {
     id: 1,
     author: {
@@ -90,7 +92,7 @@ const submitMessage = () => {
   messages.value.unshift({
     id: Date.now(),
     author: {
-      name: newMessage.value.name,
+      name: newMessage.value.name || "匿名用户", // Fallback name
       avatar: "/Avatar.jpg",
       location: "未知"
     },
@@ -113,117 +115,62 @@ const submitMessage = () => {
 };
 
 // 点赞留言
-const likeMessage = (message: any) => {
+const likeMessage = (message: GuestbookMessage) => {
   message.likes++;
   totalLikes.value++;
-};
-
-// 删除留言（仅示例，实际需要权限验证）
-const deleteMessage = (id: number) => {
-  const index = messages.value.findIndex(m => m.id === id);
-  if (index > -1) {
-    messages.value.splice(index, 1);
-    totalMessages.value = messages.value.length;
-    ElMessage.success('留言已删除');
-  }
 };
 </script>
 
 <template>
-  <div :class="$style.container">
+  <div :class="$style.body">
     <!-- 页面头部 -->
     <div :class="$style.pageHeader">
       <h1 :class="$style.pageTitle">留言板</h1>
       <p :class="$style.pageDesc">欢迎在这里留下您的足迹和想法</p>
     </div>
 
-    <!-- 统计卡片 -->
-    <div :class="$style.statsCards">
-      <div :class="$style.statCard">
-        <div :class="$style.statIcon" style="background: rgba(52, 152, 219, 0.1);">
-          <el-icon :size="24" color="#3498db"><ChatDotRound /></el-icon>
-        </div>
-        <div :class="$style.statContent">
-          <span :class="$style.statValue">{{ totalMessages }}</span>
-          <span :class="$style.statLabel">留言总数</span>
-        </div>
-      </div>
+    <div :class="$style.sectionContainer">
+      <!-- 统计卡片 -->
+      <GuestbookStats
+        :totalMessages="totalMessages"
+        :totalLikes="totalLikes"
+      />
 
-      <div :class="$style.statCard">
-        <div :class="$style.statIcon" style="background: rgba(231, 76, 60, 0.1);">
-          <el-icon :size="24" color="#e74c3c"><Star /></el-icon>
-        </div>
-        <div :class="$style.statContent">
-          <span :class="$style.statValue">{{ totalLikes }}</span>
-          <span :class="$style.statLabel">获赞总数</span>
-        </div>
-      </div>
-    </div>
+      <div :class="$style.content">
+        <!-- 留言表单 -->
+        <GuestbookForm
+          v-model="newMessage"
+          @submit="submitMessage"
+        />
 
-    <div :class="$style.content">
-      <!-- 留言表单 -->
-      <div :class="$style.messageForm">
-        <h3 :class="$style.formTitle">发表留言</h3>
-        
-        <div :class="$style.formFields">
-          <el-input
-            v-model="newMessage.content"
-            type="textarea"
-            :rows="6"
-            placeholder="写下你想说的话..."
-            :class="$style.formTextarea"
-          />
-
-          <div :class="$style.formActions">
-            <el-button  size="large" @click="submitMessage" plain>
-              发表留言
-            </el-button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 留言列表 -->
-      <div :class="$style.messagesList">
-        <h3 :class="$style.listTitle">全部留言 ({{ messages.length }})</h3>
-
-        <div :class="$style.messagesGrid">
-          <div
-            v-for="message in messages"
-            :key="message.id"
-            :class="$style.messageCard"
-          >
-            <div :class="$style.messageHeader">
-              <el-avatar :size="56" :src="message.author.avatar" />
-              <div :class="$style.messageAuthor">
-                <span :class="$style.authorName">{{ message.author.name }}</span>
-                <div :class="$style.authorMeta">
-                  <span :class="$style.authorLocation">{{ message.author.location }}</span>
-                  <span :class="$style.messageDot">·</span>
-                  <span :class="$style.messageDate">{{ message.date }}</span>
-                </div>
-              </div>
-            </div>
-
-            <p :class="$style.messageContent">{{ message.content }}</p>
-
-            <div :class="$style.messageFooter">
-              <button :class="$style.likeBtn" @click="likeMessage(message)">
-                <el-icon><Star /></el-icon>
-                <span>{{ message.likes }}</span>
-              </button>
-            </div>
-          </div>
-        </div>
+        <!-- 留言列表 -->
+        <GuestbookList
+          :messages="messages"
+          @like="likeMessage"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <style module>
-.container {
+.body {
+  background: linear-gradient(to bottom, var(--el-bg-color) 0%, var(--el-bg-color-page) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
-  padding: 80px 20px 60px;
+  transition: background 0.3s ease;
+  padding-top: 80px; /* Align with index layout */
+}
+
+.sectionContainer {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
 }
 
 /* 页面头部 */
@@ -233,294 +180,39 @@ const deleteMessage = (id: number) => {
   text-align: center;
 }
 
-.headerIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 96px;
-  height: 96px;
-  background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
-  border-radius: 50%;
-  color: #fff;
-  margin-bottom: 24px;
-  box-shadow: 0 8px 24px rgba(52, 152, 219, 0.3);
-}
-
 .pageTitle {
   font-size: 48px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0 0 16px 0;
   letter-spacing: -1px;
 }
 
 .pageDesc {
   font-size: 18px;
-  color: #666;
+  color: var(--el-text-color-secondary);
   margin: 0;
-}
-
-/* 统计卡片 */
-.statsCards {
-  max-width: 1200px;
-  margin: 0 auto 48px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-}
-
-.statCard {
-  background: #fff;
-  border-radius: 16px;
-  padding: 28px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
-}
-
-.statCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-.statIcon {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.statContent {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.statValue {
-  font-size: 32px;
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 1;
-}
-
-.statLabel {
-  font-size: 14px;
-  color: #999;
 }
 
 /* 内容区 */
 .content {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 48px;
-}
-
-/* 留言表单 */
-.messageForm {
-  background: #fff;
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.formTitle {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 28px 0;
-}
-
-.formFields {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.formRow {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.formInput :global(.el-input__wrapper) {
-  border-radius: 12px;
-  padding: 12px 16px;
-  box-shadow: 0 0 0 1px #e0e0e0 inset;
-}
-
-.formInput :global(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #3498db inset;
-}
-
-.formInput :global(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 2px #3498db inset;
-}
-
-.formTextarea :global(.el-textarea__inner) {
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-  padding: 16px;
-  font-size: 15px;
-  line-height: 1.6;
-  transition: all 0.3s ease;
-}
-
-.formTextarea :global(.el-textarea__inner):focus {
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-}
-
-.formActions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* 留言列表 */
-.messagesList {
-  background: #fff;
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.listTitle {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 32px 0;
-}
-
-.messagesGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-}
-
-.messageCard {
-  background: #f8f9fa;
-  border-radius: 16px;
-  padding: 24px;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-}
-
-.messageCard:hover {
-  background: #fff;
-  border-color: rgba(52, 152, 219, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
-}
-
-.messageHeader {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.messageAuthor {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  justify-content: center;
-}
-
-.authorName {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-.authorMeta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: #999;
-}
-
-.authorLocation {
-  color: #666;
-}
-
-.messageDot {
-  color: #ddd;
-}
-
-.messageDate {
-  color: #999;
-}
-
-.messageContent {
-  font-size: 15px;
-  color: #333;
-  line-height: 1.7;
-  margin: 0 0 16px 0;
-}
-
-.messageFooter {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.likeBtn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 20px;
-  font-size: 14px;
-  color: #666;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.likeBtn:hover {
-  background: #3498db;
-  border-color: #3498db;
-  color: #fff;
-  transform: scale(1.05);
-}
-
-/* 响应式 */
-@media (max-width: 1024px) {
-  .messagesGrid {
-    grid-template-columns: 1fr;
-  }
+  margin-bottom: 60px;
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 60px 16px 40px;
+  .body {
+    padding-top: 60px;
+  }
+  
+  .sectionContainer {
+    padding: 0 16px;
   }
 
   .pageTitle {
     font-size: 36px;
-  }
-
-  .statsCards {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .messageForm,
-  .messagesList {
-    padding: 24px;
-  }
-
-  .formRow {
-    grid-template-columns: 1fr;
   }
 }
 </style>

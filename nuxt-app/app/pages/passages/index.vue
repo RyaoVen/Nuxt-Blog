@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Clock, View, Star } from '@element-plus/icons-vue';
-//TODO 工程化
-//TODO 完成逻辑层编写
+import type { Passage, HotPassage, Category, Tag } from '~/stores/type/passages';
+
 // 文章列表数据
-const articles = ref([
+const articles = ref<Passage[]>([
   {
     id: 1,
     title: "深入理解 Vue 3 Composition API",
@@ -118,7 +117,7 @@ const articles = ref([
 ]);
 
 // 热门文章数据
-const hotArticles = ref([
+const hotArticles = ref<HotPassage[]>([
   { id: 4, title: "Nuxt 3 全栈开发实践", views: 3421 },
   { id: 5, title: "前端性能优化完全指南", views: 2890 },
   { id: 2, title: "TypeScript 类型体操实战指南", views: 2156 },
@@ -127,7 +126,7 @@ const hotArticles = ref([
 ]);
 
 // 标签分类数据
-const tags = ref([
+const tags = ref<Tag[]>([
   { name: "Vue", count: 12, color: "#42b883" },
   { name: "TypeScript", count: 18, color: "#3178c6" },
   { name: "JavaScript", count: 25, color: "#f7df1e" },
@@ -141,7 +140,7 @@ const tags = ref([
 ]);
 
 // 分类数据
-const categories = ref([
+const categories = ref<Category[]>([
   { name: "前端开发", count: 28 },
   { name: "编程语言", count: 15 },
   { name: "全栈开发", count: 12 },
@@ -159,45 +158,14 @@ const navigateToArticle = (id: number) => {
     <div :class="$style.layout">
       <!-- 左侧边栏 - 热门文章 -->
       <aside :class="$style.leftSidebar">
-        <div :class="$style.sidebarCard">
-          <h3 :class="$style.sidebarTitle">
-            <el-icon><Star /></el-icon>
-            热门
-          </h3>
-          <div :class="$style.hotList">
-            <div 
-              v-for="(article, index) in hotArticles" 
-              :key="article.id"
-              :class="$style.hotItem"
-              @click="navigateToArticle(article.id)"
-            >
-              <span :class="$style.hotRank">
-                {{ index + 1 }}
-              </span>
-              <div :class="$style.hotContent">
-                <p :class="$style.hotTitle">{{ article.title }}</p>
-                <span :class="$style.hotViews">
-                  <el-icon><View /></el-icon>
-                  {{ article.views }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <PassagesHotList 
+          :articles="hotArticles"
+          @click="navigateToArticle"
+        />
 
-        <div :class="$style.sidebarCard">
-          <h3 :class="$style.sidebarTitle">分类</h3>
-          <div :class="$style.categoryList">
-            <div 
-              v-for="category in categories" 
-              :key="category.name"
-              :class="$style.categoryItem"
-            >
-              <span :class="$style.categoryName">{{ category.name }}</span>
-              <span :class="$style.categoryCount">{{ category.count }}</span>
-            </div>
-          </div>
-        </div>
+        <PassagesCategoryList
+          :categories="categories"
+        />
       </aside>
 
       <!-- 中间主内容 - 文章列表 -->
@@ -206,41 +174,10 @@ const navigateToArticle = (id: number) => {
           <h1 :class="$style.pageTitle">全部</h1>
         </div>
 
-        <div :class="$style.articleList">
-          <article 
-            v-for="article in articles" 
-            :key="article.id"
-            :class="$style.articleItem"
-            @click="navigateToArticle(article.id)"
-          >
-            <div :class="$style.articleHeader">
-              <span :class="$style.articleCategory">{{ article.category }}</span>
-              <h2 :class="$style.articleTitle">{{ article.title }}</h2>
-            </div>
-            <p :class="$style.articleSummary">{{ article.summary }}</p>
-            <div :class="$style.articleMeta">
-              <div :class="$style.metaLeft">
-                <span :class="$style.metaItem">
-                  <el-icon><Clock /></el-icon>
-                  {{ article.date }}
-                </span>
-                <span :class="$style.metaItem">
-                  <el-icon><View /></el-icon>
-                  {{ article.views }}
-                </span>
-              </div>
-              <div :class="$style.articleTags">
-                <span 
-                  v-for="tag in article.tags" 
-                  :key="tag"
-                  :class="$style.tag"
-                >
-                  {{ tag }}
-                </span>
-              </div>
-            </div>
-          </article>
-        </div>
+        <PassagesList
+          :articles="articles"
+          @click="navigateToArticle"
+        />
 
         <!-- 分页 -->
         <div :class="$style.pagination">
@@ -255,19 +192,9 @@ const navigateToArticle = (id: number) => {
 
       <!-- 右侧边栏 - 标签云 -->
       <aside :class="$style.rightSidebar">
-        <div :class="$style.sidebarCard">
-          <h3 :class="$style.sidebarTitle">标签云</h3>
-          <div :class="$style.tagCloud">
-            <span 
-              v-for="tag in tags" 
-              :key="tag.name"
-              :class="$style.tagItem"
-            >
-              {{ tag.name }}
-              <span :class="$style.tagCount">{{ tag.count }}</span>
-            </span>
-          </div>
-        </div>
+        <PassagesTagCloud
+          :tags="tags"
+        />
       </aside>
     </div>
   </div>
@@ -276,8 +203,9 @@ const navigateToArticle = (id: number) => {
 <style module>
 .container {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+  background: linear-gradient(to bottom, var(--el-bg-color) 0%, var(--el-bg-color-page) 100%);
   padding: 80px 20px 40px;
+  transition: background 0.3s ease;
 }
 
 .layout {
@@ -299,13 +227,13 @@ const navigateToArticle = (id: number) => {
 .pageTitle {
   font-size: 32px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0 0 5px 0;
 }
 
 .pageDesc {
   font-size: 16px;
-  color: #666;
+  color: var(--el-text-color-regular);
   margin: 0;
 }
 
@@ -318,22 +246,22 @@ const navigateToArticle = (id: number) => {
 }
 
 .sidebarCard {
-  background: #fff;
+  background: var(--el-bg-color-overlay);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
   transition: all 0.3s ease;
 }
 
 .sidebarCard:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--el-box-shadow);
 }
 
 .sidebarTitle {
   font-size: 18px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0 0 20px 0;
   display: flex;
   align-items: center;
@@ -358,12 +286,12 @@ const navigateToArticle = (id: number) => {
 }
 
 .hotItem:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
   transform: translate(-2px,-2px);
 }
 .hotItem:hover .hotTitle{
-  color: #3498db;
+  color: var(--el-color-primary);
 
 }
 
@@ -378,7 +306,8 @@ const navigateToArticle = (id: number) => {
   font-weight: 700;
   padding-bottom: 6px;
   padding-top: 6px;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid var(--el-color-primary);
+  color: var(--el-text-color-primary);
 }
 
 
@@ -391,7 +320,7 @@ const navigateToArticle = (id: number) => {
 .hotTitle {
   transition:color 0.3s ease;
   font-size: 14px;
-  color: #333;
+  color: var(--el-text-color-primary);
   margin: 0 0 6px 0;
   line-height: 1.4;
   overflow: hidden;
@@ -404,7 +333,7 @@ const navigateToArticle = (id: number) => {
 
 .hotViews {
   font-size: 12px;
-  color: #999;
+  color: var(--el-text-color-secondary);
   display: flex;
   align-items: center;
   justify-content: end;
@@ -423,7 +352,7 @@ const navigateToArticle = (id: number) => {
   justify-content: space-between;
   align-items: center;
   padding: 10px 12px;
-  background: #f8f9fa;
+  background: var(--el-fill-color-light);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -432,24 +361,24 @@ const navigateToArticle = (id: number) => {
 
 .categoryItem:hover {
   transform: translate(-2px,-2px);
-  box-shadow:0 4px 12px rgba(0, 0, 0, 0.08);
-  border:1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--el-box-shadow-light);
+  border:1px solid var(--el-border-color-lighter);
 }
 
 .categoryName {
   transition: all 0.3s ease;
   font-size: 14px;
-  color: #333;
+  color: var(--el-text-color-regular);
   font-weight: 500;
 }
 .categoryItem:hover .categoryName {
-  color: #3498db;
+  color: var(--el-color-primary);
 }
 
 .categoryCount {
   font-size: 13px;
-  color: #999;
-  background: #fff;
+  color: var(--el-text-color-secondary);
+  background: var(--el-bg-color);
   padding: 2px 8px;
   border-radius: 12px;
 }
@@ -466,11 +395,11 @@ const navigateToArticle = (id: number) => {
 }
 
 .articleItem {
-  background: #fff;
+  background: var(--el-bg-color-overlay);
   border-radius: 16px;
   padding: 28px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   display: flex;
@@ -479,8 +408,8 @@ const navigateToArticle = (id: number) => {
 
 .articleItem:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-color: rgba(52, 152, 219, 0.2);
+  box-shadow: var(--el-box-shadow);
+  border-color: var(--el-color-primary-light-8);
 }
 
 .articleHeader {
@@ -492,20 +421,20 @@ const navigateToArticle = (id: number) => {
 
 .articleCategory {
   flex-shrink: 0;
-  background: rgba(52, 152, 219, 0.1);
-  color: #3498db;
+  background: var(--el-color-primary-light-9);
+  color: var(--el-color-primary);
   padding: 6px 14px;
   border-radius: 16px;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid rgba(52, 152, 219, 0.2);
+  border: 1px solid var(--el-color-primary-light-8);
 }
 
 .articleTitle {
   flex: 1;
   font-size: 22px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--el-text-color-primary);
   margin: 0;
   line-height: 1.4;
   letter-spacing: -0.3px;
@@ -513,7 +442,7 @@ const navigateToArticle = (id: number) => {
 
 .articleSummary {
   font-size: 15px;
-  color: #666;
+  color: var(--el-text-color-regular);
   line-height: 1.7;
   margin: 0 0 20px 0;
   overflow: hidden;
@@ -528,7 +457,7 @@ const navigateToArticle = (id: number) => {
   justify-content: space-between;
   align-items: center;
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--el-border-color-lighter);
 }
 
 .metaLeft {
@@ -538,7 +467,7 @@ const navigateToArticle = (id: number) => {
 
 .metaItem {
   font-size: 13px;
-  color: #999;
+  color: var(--el-text-color-secondary);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -551,18 +480,18 @@ const navigateToArticle = (id: number) => {
 
 .tag {
   font-size: 12px;
-  color: #666;
+  color: var(--el-text-color-regular);
   padding: 4px 12px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--el-border-color-lighter);
+  background: var(--el-fill-color-light);
   border-radius: 12px;
   transition: all 0.3s ease;
 }
 
 .tag:hover {
-  border-color: rgba(52, 152, 219, 0.4);
-  background: rgba(52, 152, 219, 0.05);
-  color: #3498db;
+  border-color: var(--el-color-primary-light-5);
+  background: var(--el-color-primary-light-9);
+  color: var(--el-color-primary);
 }
 
 /* 标签云 */
@@ -578,17 +507,19 @@ const navigateToArticle = (id: number) => {
   transition: all 0.3s ease;
   font-weight: 600;
   padding: 4px 8px;
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--el-fill-color-light);
   backdrop-filter: blur(5px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--el-box-shadow-lighter);
   border: 1px solid transparent;
+  color: var(--el-text-color-regular);
 }
 
 .tagItem:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--el-bg-color-overlay);
   transform: translateY(-2px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--el-box-shadow-light);
+  border: 1px solid var(--el-border-color-lighter);
+  color: var(--el-color-primary);
 }
 
 .tagCount {
